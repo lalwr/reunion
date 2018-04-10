@@ -9,8 +9,26 @@ FLUSH PRIVILEGES ;
 
 USE reunion;
 
+show databases;
+
 -- creates some test-tables and data
 -- DROP TABLE EMPLOYEE;
+
+#학교
+CREATE TABLE school(
+  school_no       INTEGER NOT NULL auto_increment COMMENT '학교 번호',
+  school_name     VARCHAR(50) NOT NULL COMMENT  '학교명',
+  school_category VARCHAR(20) NOT NULL COMMENT '학교 카테고리',
+  reg_date        DATETIME NOT NULL COMMENT '등록일시',
+  PRIMARY KEY (school_no)
+);
+
+#게시판 카테고리
+CREATE TABLE board_category(
+  category_no   INTEGER NOT NULL auto_increment COMMENT '게시판 카테고리 번호',
+  category_name VARCHAR(50) NULL  COMMENT '카테고리 이름',
+  PRIMARY KEY  (category_no)
+);
 
 CREATE TABLE board(
   board_no      INTEGER NOT NULL auto_increment COMMENT '게시글 번호',
@@ -27,12 +45,7 @@ CREATE TABLE board(
   FOREIGN KEY (category) REFERENCES board_category (category_no)
 );
 
-CREATE TABLE board_category(
-  category_no   INTEGER NOT NULL auto_increment COMMENT '게시판 카테고리 번호',
-  category_name VARCHAR(50) NULL  COMMENT '카테고리 이름',
-  PRIMARY KEY  (category_no)
-);
-
+#댓글
 CREATE TABLE board_reply(
   reply_no      INTEGER NOT NULL auto_increment COMMENT '댓글 번호',
   reply_content VARCHAR(500) NOT NULL COMMENT '댓글 내용',
@@ -44,6 +57,7 @@ CREATE TABLE board_reply(
   FOREIGN KEY (reply_no) REFERENCES board (board_no)
 );
 
+#유저
 CREATE TABLE member(
   member_no      INTEGER NOT NULL auto_increment COMMENT '번호',
   id       	     VARCHAR(50) NOT NULL COMMENT '아이디',
@@ -54,6 +68,7 @@ CREATE TABLE member(
   PRIMARY KEY (member_no)
 );
 
+#유저와 학교관리
 CREATE TABLE member_school(
   member_no      INTEGER NOT NULL auto_increment COMMENT '번호',
   school_no       INTEGER NOT NULL auto_increment COMMENT '학교 번호',
@@ -61,13 +76,7 @@ CREATE TABLE member_school(
   FOREIGN KEY (school_no) REFERENCES school (school_no)
 );
 
-CREATE TABLE school(
-  school_no       INTEGER NOT NULL auto_increment COMMENT '학교 번호',
-  school_name     VARCHAR(50) NOT NULL COMMENT  '학교명',
-  school_category VARCHAR(20) NOT NULL COMMENT '학교 카테고리',
-  reg_date        DATETIME NOT NULL COMMENT '등록일시',
-  PRIMARY KEY (school_no)
-);
+
 
 #유저
 INSERT INTO member(id, password, name, school_no, reg_date, edit_date)
