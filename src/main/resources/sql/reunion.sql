@@ -1,5 +1,7 @@
 # Database 생성
 CREATE DATABASE reunion;
+# Database 삭제
+# DROP DATABASE reunion;
 # 원격으로도 접속가능
 GRANT ALL PRIVILEGES ON reunion.* TO fastcamp@'%' IDENTIFIED BY 'fastcamp';
 # 로컬로만 접속가능
@@ -19,73 +21,86 @@ ALTER TABLE board CHANGE subejct subject VARCHAR(50) NOT NULL COMMENT '제목';
 
 #학교
 CREATE TABLE school(
-  school_no       INTEGER NOT NULL auto_increment COMMENT '학교 번호',
-  school_name     VARCHAR(50) NOT NULL COMMENT  '학교명',
-  school_category VARCHAR(20) NOT NULL COMMENT '학교 카테고리',
+  no       INTEGER NOT NULL auto_increment COMMENT '학교 번호',
+  name     VARCHAR(50) NOT NULL COMMENT  '학교명',
+  category VARCHAR(20) NOT NULL COMMENT '학교 카테고리',
   reg_date        DATETIME NOT NULL COMMENT '등록일시',
-  PRIMARY KEY (school_no)
+  PRIMARY KEY (no)
 );
 
-#게시판 카테고리
-CREATE TABLE board_category(
-  category_no   INTEGER NOT NULL auto_increment COMMENT '게시판 카테고리 번호',
-  category_name VARCHAR(50) NULL  COMMENT '카테고리 이름',
-  PRIMARY KEY  (category_no)
-);
-
-CREATE TABLE board(
-  board_no      INTEGER NOT NULL auto_increment COMMENT '게시글 번호',
-  subject       VARCHAR(50) NOT NULL COMMENT '제목',
-  img_name      VARCHAR(200) NULL  COMMENT '이미지명',
-  content       VARCHAR(500) NOT NULL COMMENT '내용',
-  reg_id        VARCHAR(20) NOT NULL COMMENT '등록자 아이디',
-  reg_date      DATETIME NOT NULL COMMENT '등록일시',
-  edit_date     DATETIME NOT NULL COMMENT '수정일시',
-  school_no     INTEGER NOT NULL  COMMENT '학교 번호',
-  category_no   INTEGER NOT NULL COMMENT '게시판 카테고리 번호', 
-  PRIMARY KEY  (board_no),
-  FOREIGN KEY (school_no) REFERENCES school (school_no),
-  FOREIGN KEY (category_no) REFERENCES board_category (category_no)
-);
-
-#댓글
-CREATE TABLE board_reply(
-  reply_no      INTEGER NOT NULL auto_increment COMMENT '댓글 번호',
-  reply_content VARCHAR(500) NOT NULL COMMENT '댓글 내용',
-  member_id     VARCHAR(50) NOT NULL COMMENT '아이디',
-  reg_date      DATETIME NOT NULL COMMENT '등록일시',
-  edit_date     DATETIME NOT NULL COMMENT '수정일시',
-  board_no      INTEGER NOT NULL COMMENT '게시글 번호',
-  PRIMARY KEY  (reply_no),
-  FOREIGN KEY (reply_no) REFERENCES board (board_no)
+#게시판 학교별 카테고리
+CREATE TABLE school_category(
+  no        INTEGER NOT NULL auto_increment COMMENT '게시판 카테고리 번호',
+  name 	    VARCHAR(50) NULL COMMENT '게시판 카테고리 이름',
+  school_no INTEGER NOT NULL COMMENT '학교 번호',
+  PRIMARY KEY  (no),
+  FOREIGN KEY (school_no) REFERENCES school(no)
 );
 
 #유저
 CREATE TABLE member(
-  member_no      INTEGER NOT NULL auto_increment COMMENT '번호',
+  no      INTEGER NOT NULL auto_increment COMMENT '번호',
   id       	     VARCHAR(50) NOT NULL COMMENT '아이디',
   password       VARCHAR(20) NOT NULL COMMENT '비밀번호',
   name		     VARCHAR(15) NOT NULL COMMENT '성명',
   reg_date       DATETIME NOT NULL COMMENT '등록일시',
-  edit_date     DATETIME NOT NULL COMMENT '수정일시',
-  PRIMARY KEY (member_no)
+  edit_date      DATETIME NOT NULL COMMENT '수정일시',
+  PRIMARY KEY (no)
 );
 
 #유저와 학교관리
 CREATE TABLE member_school(
   member_no      INTEGER NOT NULL COMMENT '번호',
   school_no       INTEGER NOT NULL COMMENT '학교 번호',
-  FOREIGN KEY (member_no) REFERENCES member (member_no),
-  FOREIGN KEY (school_no) REFERENCES school (school_no)
+  FOREIGN KEY (member_no) REFERENCES member (no),
+  FOREIGN KEY (school_no) REFERENCES school (no)
+);
+
+CREATE TABLE board(
+  no      	    INTEGER NOT NULL auto_increment COMMENT '게시글 번호',
+  subject       VARCHAR(50) NOT NULL COMMENT '제목',
+  content       VARCHAR(500) NOT NULL COMMENT '내용',
+  reg_id        VARCHAR(20) NOT NULL COMMENT '등록자 아이디',
+  reg_date      DATETIME NOT NULL COMMENT '등록일시',
+  edit_date     DATETIME NOT NULL COMMENT '수정일시',
+  school_no     INTEGER NOT NULL  COMMENT '학교 번호',
+  category_no   INTEGER NOT NULL COMMENT '게시판 카테고리 번호', 
+  PRIMARY KEY  (no),
+  FOREIGN KEY (school_no) REFERENCES school (no)
+);
+
+#댓글
+CREATE TABLE board_reply(
+  no      INTEGER NOT NULL auto_increment COMMENT '댓글 번호',
+  reply_content VARCHAR(500) NOT NULL COMMENT '댓글 내용',
+  member_id     VARCHAR(50) NOT NULL COMMENT '아이디',
+  reg_date      DATETIME NOT NULL COMMENT '등록일시',
+  edit_date     DATETIME NOT NULL COMMENT '수정일시',
+  board_no      INTEGER NOT NULL COMMENT '게시글 번호',
+  PRIMARY KEY  (no),
+  FOREIGN KEY (board_no) REFERENCES board (no)
+);
+
+CREATE TABLE file(
+  no      	    INTEGER NOT NULL auto_increment COMMENT '파일번호',
+  name          VARCHAR(100) NOT NULL COMMENT '파일명',
+  temp_name     VARCHAR(100) NOT NULL COMMENT '임시 파일명',
+  path          VARCHAR(100) NOT NULL COMMENT '파일 경로',
+  format		VARCHAR(100) NOT NULL COMMENT '파일 형식',
+  reg_id        VARCHAR(20) NOT NULL COMMENT '등록자 아이디',
+  reg_date      DATETIME NOT NULL COMMENT '등록일시',
+  board_no      INTEGER NOT NULL COMMENT '게시글 번호',
+  PRIMARY KEY  (no),
+  FOREIGN KEY (board_no) REFERENCES board (no)
 );
 
 #charset 변경
 alter table school convert to character set utf8;
+alter table school_category convert to character set utf8;
 alter table member convert to character set utf8;
-alter table member_school convert to character set utf8;
 alter table board convert to character set utf8;
 alter table board_reply convert to character set utf8;
-alter table board_category convert to character set utf8;
+alter table file convert to character set utf8;
 
 
 #유저
@@ -93,7 +108,7 @@ INSERT INTO member(id, password, name , reg_date, edit_date)
 VALUES('kim', '123', '김형진', now(), now());
 
 #학교
-INSERT INTO school(school_name, school_category, reg_date)
+INSERT INTO school(name, category, reg_date)
 VALUES('패스트캠퍼스 초등학교', 'elementary', now());
 
 #유저 학교 관리
@@ -101,57 +116,58 @@ INSERT INTO member_school(member_no, school_no)
 VALUES('1', '1');
 
 #게시판 카테고리
-INSERT INTO board_category(category_name)
-VALUES('잡담게시판');
-INSERT INTO board_category(category_name)
-VALUES('공지게시판');
+INSERT INTO school_category(name, school_no)
+VALUES('잡담게시판', '1');
+INSERT INTO school_category(name, school_no)
+VALUES('공지게시판', '1');
 
 # 게시판
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('강남에서 번개', 'map.png', '강남 8시 모입시다.', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('홍대 번개', 'map1.png', '홍대 모입시다.', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('번개', 'map.png', '8시 번개.', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('강남 급번개', 'map3.png', '강남 번개 모집.', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('놀아요', 'map4.png', '오늘 노실분', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('강남에서 번개', '강남 8시 모입시다.', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('홍대 번개',  '홍대 모입시다.', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('번개',  '8시 번개.', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('강남 급번개', '강남 번개 모집.', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('놀아요',  '오늘 노실분', '1', '1', 'kim', now(), now());
 
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('모임공지 1', '1.png', '공지 1단계', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('모임공지 2', '2.png', '공지 2단계', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('모임공지 3', '3.png', '공지 3단계', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('모임공지 4', '4.png', '공지 4단계', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('모임공지 5', '5.png', '공지 5단계', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('모임공지 1',  '공지 1단계', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('모임공지 2',  '공지 2단계', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('모임공지 3', '공지 3단계', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('모임공지 4', '공지 4단계', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('모임공지 5', '공지 5단계', '1', '1', 'kim', now(), now());
 
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('잡담 합시다', 'ad.png', '댓글 타임', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('치킨 이벤트', 'adsasd.png', '10번째 분에게 치맥.', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('날씨가 춥네요', 'dasda.png', '춥다', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('날씨ㅠ', 'da123.png', '추운 날.', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('도배 123123', 'dsa123.png', '도배!!!', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('잡담 합시다', '댓글 타임', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('치킨 이벤트', '10번째 분에게 치맥.', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('날씨가 춥네요', '춥다', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('날씨ㅠ', '추운 날.', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('도배 123123', '도배!!!', '1', '1', 'kim', now(), now());
 
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('게임하실분??', 'dsada.png', '게임 같이해요', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('게임하시는분??', 'dsa.png', '게임뭐하시나요', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('치맥!!', 'dsad.png', '치맥 먹어용!!', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('주말 놀러가요!', '123.png', '주말 여의도로!!', '1', '1', 'kim', now(), now());
-INSERT INTO board(subject, img_name, content, category_no, school_no, reg_id, reg_date, edit_date)
-VALUES('동창회 모집', 'dsad.png', '동창회 10기 모여', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('게임하실분??', '게임 같이해요', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('게임하시는분??', '게임뭐하시나요', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('치맥!!',  '치맥 먹어용!!', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('주말 놀러가요!', '주말 여의도로!!', '1', '1', 'kim', now(), now());
+INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date)
+VALUES('동창회 모집',  '동창회 10기 모여', '1', '1', 'kim', now(), now());
 
 #게시판 답글
+#select * from board_reply;
 INSERT INTO board_reply(reply_content, member_id, reg_date, edit_date, board_no)
 VALUES('추천!!', 'kim', now(), now(), 1);
 INSERT INTO board_reply(reply_content, member_id, reg_date, edit_date, board_no)
@@ -159,9 +175,8 @@ VALUES('좋아요~~', 'kim', now(), now(), 1);
 INSERT INTO board_reply(reply_content, member_id, reg_date, edit_date, board_no)
 VALUES('무댓!!', 'kim', now(), now(), 1);
 
-SELECT board_no AS boardNo
+SELECT no AS no
 	   ,subject AS subject
-	   ,img_name AS imgNmme
 	   ,content AS content
 	   ,reg_id AS regId
 	   ,edit_date AS editDate
