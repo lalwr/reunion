@@ -38,11 +38,11 @@ CREATE TABLE board(
   reg_id        VARCHAR(20) NOT NULL COMMENT '등록자 아이디',
   reg_date      DATETIME NOT NULL COMMENT '등록일시',
   edit_date     DATETIME NOT NULL COMMENT '수정일시',
-  school_no		VARCHAR(15) NOT NULL COMMENT '학교 번호',
+  school_no     INTEGER NOT NULL  COMMENT '학교 번호',
   category_no   INTEGER NOT NULL COMMENT '게시판 카테고리 번호', 
   PRIMARY KEY  (board_no),
   FOREIGN KEY (school_no) REFERENCES school (school_no),
-  FOREIGN KEY (category) REFERENCES board_category (category_no)
+  FOREIGN KEY (category_no) REFERENCES board_category (category_no)
 );
 
 #댓글
@@ -70,8 +70,8 @@ CREATE TABLE member(
 
 #유저와 학교관리
 CREATE TABLE member_school(
-  member_no      INTEGER NOT NULL auto_increment COMMENT '번호',
-  school_no       INTEGER NOT NULL auto_increment COMMENT '학교 번호',
+  member_no      INTEGER NOT NULL COMMENT '번호',
+  school_no       INTEGER NOT NULL COMMENT '학교 번호',
   FOREIGN KEY (member_no) REFERENCES member (member_no),
   FOREIGN KEY (school_no) REFERENCES school (school_no)
 );
