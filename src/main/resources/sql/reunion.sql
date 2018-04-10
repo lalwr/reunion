@@ -14,7 +14,7 @@ USE reunion;
 show databases;
 
 #table 컬럼명 변경
-ALTER TABLE board CHANGE subejct subject VARCHAR(50) NOT NULL COMMENT '제목';
+ALTER TABLE board_reply CHANGE reply_content content VARCHAR(500) NOT NULL COMMENT '댓글 내용';
 
 -- creates some test-tables and data
 -- DROP TABLE EMPLOYEE;
@@ -71,8 +71,8 @@ CREATE TABLE board(
 
 #댓글
 CREATE TABLE board_reply(
-  no      INTEGER NOT NULL auto_increment COMMENT '댓글 번호',
-  reply_content VARCHAR(500) NOT NULL COMMENT '댓글 내용',
+  no     	    INTEGER NOT NULL auto_increment COMMENT '댓글 번호',
+  content 	    VARCHAR(500) NOT NULL COMMENT '댓글 내용',
   member_id     VARCHAR(50) NOT NULL COMMENT '아이디',
   reg_date      DATETIME NOT NULL COMMENT '등록일시',
   edit_date     DATETIME NOT NULL COMMENT '수정일시',
@@ -175,6 +175,10 @@ VALUES('좋아요~~', 'kim', now(), now(), 1);
 INSERT INTO board_reply(reply_content, member_id, reg_date, edit_date, board_no)
 VALUES('무댓!!', 'kim', now(), now(), 1);
 
+#파일
+INSERT INTO file (name, temp_name, path, format, reg_id, reg_date, board_no)
+VALUES("test.png", "dwjw123.png", "image","/mac/download/", "kim", now(), '1');
+
 SELECT no AS no
 	   ,subject AS subject
 	   ,content AS content
@@ -185,13 +189,25 @@ SELECT no AS no
 FROM board
 WHERE 1=1;
 
-SELECT category_no AS categoryNo
-       , category_name AS categoryName
-FROM board_category
+SELECT no AS no
+       , name AS name
+	   , school_no schoolNo
+FROM school_category
 WHERE 1=1;
 
-SELECT reply_no AS replyNo
-	   ,reply_content AS replyContent
+SELECT no AS no
+	   ,subject AS subject
+	   ,content AS content
+	   ,reg_id AS regId
+	   ,reg_date AS regDate
+	   ,edit_date AS editDate
+	   ,school_no AS schoolNo
+	   ,category_no AS categoryNo
+FROM board
+WHERE 1=1;
+
+SELECT no AS replyNo
+	   ,content AS content
 	   ,member_id AS memberId
 	   ,reg_date AS regDate
 	   ,edit_date AS editDate
@@ -199,7 +215,7 @@ SELECT reply_no AS replyNo
 FROM board_reply
 WHERE 1=1;
 
-SELECT member_no AS memberNo
+SELECT no AS no
 	   ,id AS id
 	   ,password AS password
 	   ,name AS name
@@ -208,15 +224,21 @@ SELECT member_no AS memberNo
 FROM member
 WHERE 1=1;
 
-SELECT school_no AS schoolNo
-	   ,school_name AS password
-	   ,school_category AS schoolCategory
+SELECT no AS no
+	   ,name AS name
+	   ,category AS category
 	   ,reg_date AS regDate
 	   ,edit_date AS editDate
 FROM school
 WHERE 1=1;
 
-SELECT member_no AS memberNo
-	   ,school_no AS schoolNo
-FROM member_school
+SELECT no AS no
+	   ,name AS name
+	   ,temp_name AS tempName
+	   ,path AS path
+	   ,format AS fotmat
+	   ,reg_id AS regID
+	   ,reg_date AS regDate
+	   ,board_no AS boardNo
+FROM file
 WHERE 1=1;
