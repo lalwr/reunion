@@ -186,6 +186,7 @@ SELECT no AS no
 	   ,subject AS subject
 	   ,content AS content
 	   ,reg_id AS regId
+	   ,reg_date AS regDate
 	   ,edit_date AS editDate
 	   ,school_no AS schoolNo
 	   ,category_no AS categoryNo
