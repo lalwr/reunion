@@ -17,5 +17,10 @@
     <input type="submit" value="로그인"/>
     <input type="button" onclick="location.href = '/join'" value = "회원가입"/>
 </form>
+
+${id}
+${name}
+${password}
+${school}
 </body>
 </html>

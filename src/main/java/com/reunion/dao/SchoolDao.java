@@ -48,8 +48,8 @@ public class SchoolDao {
         return jdbc.update("update school set name = :name, category = :category, reg_date = :regDate where no = :no", params);
     }
 
-    public School selectSchool(int no){
-        Map<String, ?> params = Collections.singletonMap("no", no);
-        return jdbc.queryForObject("SELECT no, name, category, reg_date FROM school WHERE no = :no", params, rowMapper);
+    public School selectSchool(String name){
+        Map<String, ?> params = Collections.singletonMap("name", name);
+        return jdbc.queryForObject("SELECT no, name, category, reg_date FROM school WHERE name = :name", params, rowMapper);
     }
 }
