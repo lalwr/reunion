@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app>
 
-    <display-name>Spring JavaConfig Sample</display-name>
+    <display-name>Spring reunion project</display-name>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>com.reunion.config.RootApplicationContextConfig</param-value>
+    </context-param>
+    <context-param>
+        <param-name>contextClass</param-name>
+        <param-value>
+            org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+        </param-value>
+    </context-param>
 
     <servlet>
         <servlet-name>mvc</servlet-name>
@@ -12,7 +26,7 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>com.place.config.WebMvcContextConfiguration</param-value>
+            <param-value>com.reunion.config.WebMvcContextConfiguration</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -42,5 +56,14 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <!-- 한글설정 END -->
+
+    <filter>
+        <filter-name>httpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>httpMethodFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 </web-app>
