@@ -33,7 +33,6 @@ public class MemberDao {
                 "reg_date AS regDate ,edit_date AS editDate FROM member order by no desc", Collections.emptyMap(), rowMapper);
     }
 
-    //test 다시.
     public int insertReunion(Member member){
         SqlParameterSource params = new BeanPropertySqlParameterSource(member);
         // 자동으로 id를 생성할 경우에는 아래와 같이 생성된 pk를 반환할 수 있다.

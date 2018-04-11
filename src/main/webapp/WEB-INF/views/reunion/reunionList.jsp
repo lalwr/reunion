@@ -47,6 +47,5 @@
         </c:forEach>
         </tbody>
     </table>
-
-    <button type="button" class="btn btn-default" id="">글 작성</button>
+    <button type="button" class="btn btn-default" id="">작성</button>
 </div>

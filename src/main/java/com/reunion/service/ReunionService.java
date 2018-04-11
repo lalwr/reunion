@@ -20,4 +20,8 @@ public class ReunionService {
     public Reunion content(Reunion reunion)  throws Exception{
         return reunionDao.content(reunion);
     }
+
+    public int update(Reunion reunion)  throws Exception{
+        return reunionDao.update(reunion);
+    }
 }

@@ -20,7 +20,7 @@ public class ReunionController {
     ReunionService reunionService;
 
     @GetMapping(value = "/list")
-    public String reunion(Reunion reunion, ModelMap modelMap) throws Exception{
+    public String reunion(Reunion reunion, ModelMap modelMap) throws Exception {
         List<Reunion> reunionList = reunionService.list(reunion);
 
         modelMap.addAttribute("reunionList", reunionList);
@@ -28,9 +28,15 @@ public class ReunionController {
     }
 
     @GetMapping(value = "/content/{reunionNo}")
-    public String reunionContent(Reunion reunion, @PathVariable int reunionNo, ModelMap modelMap) throws Exception{
+    public String reunionContent(Reunion reunion, @PathVariable int reunionNo, ModelMap modelMap) throws Exception {
         reunion.setNo(reunionNo);
         modelMap.addAttribute("reunionContent", reunionService.content(reunion));
         return "reunion/reunionView";
+    }
+
+    @PostMapping(value = "/update")
+    public String reunionContentUpdate(Reunion reunion, ModelMap modelMap) throws Exception {
+        reunionService.update(reunion);
+        return "redirect:/reunion/list";
     }
 }

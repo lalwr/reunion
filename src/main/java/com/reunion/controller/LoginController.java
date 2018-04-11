@@ -1,5 +1,6 @@
 package com.reunion.controller;
 
+import com.reunion.dao.MemberDao;
 import com.reunion.dao.MemberSchoolDao;
 import com.reunion.dao.ReunionDao;
 import com.reunion.domain.Member;
@@ -22,7 +23,7 @@ public class LoginController {
     @Autowired
     SchoolDao schoolDao;
     @Autowired
-    ReunionDao memberDao;
+    MemberDao memberDao;
     @Autowired
     MemberSchoolDao memberSchoolDao;
 
