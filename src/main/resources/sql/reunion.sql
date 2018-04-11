@@ -2,6 +2,8 @@
 CREATE DATABASE reunion;
 # Database 삭제
 # DROP DATABASE reunion;
+# 유니크키 설정
+ALTER IGNORE TABLE member ADD UNIQUE (id);
 # 원격으로도 접속가능
 GRANT ALL PRIVILEGES ON reunion.* TO fastcamp@'%' IDENTIFIED BY 'fastcamp';
 # 로컬로만 접속가능
@@ -45,7 +47,8 @@ CREATE TABLE member(
   name		     VARCHAR(15) NOT NULL COMMENT '성명',
   reg_date       DATETIME NOT NULL COMMENT '등록일시',
   edit_date      DATETIME NOT NULL COMMENT '수정일시',
-  PRIMARY KEY (no)
+  PRIMARY KEY (no),
+  UNIQUE (id)
 );
 
 #유저와 학교관리
