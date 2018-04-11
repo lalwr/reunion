@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @PropertySource("classpath:/properties/application.properties")
-@EnableTransactionManagement //Transaction 가눙 ㅎ활성화
+@EnableTransactionManagement //Transaction 가눙 활성화
 public class DbConfig {
     @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
