@@ -32,23 +32,23 @@ public class SchoolDao {
     }
 
     //test 다시.
-    public int insert(School school){
+    public int insertSchool(School school){
         SqlParameterSource params = new BeanPropertySqlParameterSource(school);
         // 자동으로 id를 생성할 경우에는 아래와 같이 생성된 pk를 반환할 수 있다.
         return insertAction.executeAndReturnKey(params).intValue();
     }
 
-    public int delete(int no){
+    public int deleteSchool(int no){
         Map<String, ?> params = Collections.singletonMap("no", no);
         return jdbc.update("delete from school where no = :no", params);
     }
 
-    public int update(School school){
+    public int updateSchool(School school){
         SqlParameterSource params = new BeanPropertySqlParameterSource(school);
         return jdbc.update("update school set name = :name, category = :category, reg_date = :regDate where no = :no", params);
     }
 
-    public School select(String name){
+    public School selectSchool(String name){
         Map<String, ?> params = Collections.singletonMap("name", name);
         return jdbc.queryForObject("SELECT no, name, category, reg_date FROM school WHERE name = :name", params, rowMapper);
     }

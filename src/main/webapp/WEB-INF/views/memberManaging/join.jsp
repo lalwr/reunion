@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<form method="post" action="/memberManaging/signUp">
+<form method="post" action="/signUp">
     아이디 :  <input type="text" name="id"/>
     <input type="button" value="중복 확인" id = "idDubCheck""/><br>
     성명 :  <input type="text" name="name"/><br>
