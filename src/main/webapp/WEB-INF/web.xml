@@ -57,6 +57,7 @@
     </filter-mapping>
     <!-- 한글설정 END -->
 
+    <!-- 모든요청 HTTP PUT, DELETE 사용 -->
     <filter>
         <filter-name>httpMethodFilter</filter-name>
         <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
