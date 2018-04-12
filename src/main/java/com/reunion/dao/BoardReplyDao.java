@@ -2,15 +2,19 @@ package com.reunion.dao;
 
 import com.reunion.domain.BoardReply;
 import com.reunion.domain.Member;
+import com.reunion.domain.MemberSchool;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class BoardReplyDao {
@@ -29,17 +33,30 @@ public class BoardReplyDao {
         return jdbc.query("SELECT no AS no ,content AS content ,member_id AS id ,board_no AS boardNo, " +
                 "reg_date AS regDate ,edit_date AS editDate FROM board_reply order by no desc", Collections.emptyMap(), rowMapper);
     }
+
+    public int insert(BoardReply reply){
+        SqlParameterSource params = new BeanPropertySqlParameterSource(reply);
+        // 자동으로 id를 생성할 경우에는 아래와 같이 생성된 pk를 반환할 수 있다.
+        int count = insertAction.execute(params);
+        return count;
+    }
+
+    public int delete(int no){
+        Map<String, ?> params = Collections.singletonMap("no", no);
+        return jdbc.update("delete from board_reply where no = :no", params);
+    }
+
+    public int update(BoardReply boardReply){
+        SqlParameterSource params = new BeanPropertySqlParameterSource(boardReply);
+        return jdbc.update("update board_reply set content = :content, reg_date = :regDate, " +
+                "edit_date = :editDate where board_no = :boardNo and no = :no and member_id = :memberId", params);
+    }
+
+//    public BoardReply selectReply(int no){
+//        Map<String, ?> params = Collections.singletonMap("no", no);
+//        return jdbc.queryForObject("SELECT no AS no ,content AS content ,member_id AS memberId ,reg_date AS regDate ," +
+//                "edit_date AS editDate FROM board_reply WHERE no = :no and board_no = : boardNo and member_id = :memberId", params, rowMapper);
+//    }
 }
 
-/*
-CREATE TABLE board_reply(
-  no     	    INTEGER NOT NULL auto_increment COMMENT '댓글 번호',
-  content 	    VARCHAR(500) NOT NULL COMMENT '댓글 내용',
-  member_id     VARCHAR(50) NOT NULL COMMENT '아이디',
-  reg_date      DATETIME NOT NULL COMMENT '등록일시',
-  edit_date     DATETIME NOT NULL COMMENT '수정일시',
-  board_no      INTEGER NOT NULL COMMENT '게시글 번호',
-  PRIMARY KEY  (no),
-  FOREIGN KEY (board_no) REFERENCES board (no)
-);
- */
+

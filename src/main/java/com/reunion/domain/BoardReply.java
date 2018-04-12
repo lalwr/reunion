@@ -13,7 +13,7 @@ public class BoardReply {
     String memberId;
     String regDate;
     String editDate;
-    int bardNo;
+    int boardNo;
 }
 
 
