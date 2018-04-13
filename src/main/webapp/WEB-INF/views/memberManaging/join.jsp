@@ -12,6 +12,8 @@
     아이디 :  <input type="text" name="id" id = "id"/>
     <input type="button" value="중복 확인" id = "idCheck"/><br>
     <script>
+        var idCheckResult = false;
+        var pwCheckResult = false;
         document.getElementById("idCheck").onclick = function(){
             idCheck(document.getElementById("id").value, "idCheck");
         }
@@ -19,7 +21,17 @@
             var req = new XMLHttpRequest();
             req.onreadystatechange = function () {
                 if(this.readyState == 4 && this.status == 200){
-                    alert(this.response);
+                    idCheckResult = this.response == "true";
+                    if(idCheckResult){
+                        alert("사용 가능한 아이디입니다.")
+                    }else{
+                        alert("이미 등록된 아이디 입니다.")
+                    }
+                    if(idCheckResult && pwCheckResult){
+                        button.disabled = false;
+                    }else{
+                        button.disabled = true;
+                    }
                 }
             }
             req.open("GET", url +"?id="+str);
@@ -38,7 +50,13 @@
                 alert("비밀번호 입력 필요");
             }else if(document.getElementById("pw").value == document.getElementById("pwC").value){
                 alert("비밀번호 확인");
-                button.disabled = false;
+                pwCheckResult = true;
+                if(idCheckResult){
+                    button.disabled = false;
+                }else{
+                    alert("아이디 중복 확인 요청");
+                    button.disabled = true;
+                }
             }else{
                 alert("비밀번호 불일치");
                 button.disabled = true;
