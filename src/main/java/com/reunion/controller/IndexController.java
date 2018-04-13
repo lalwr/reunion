@@ -8,7 +8,7 @@ public class IndexController {
 
     @GetMapping(value ="/")
     public String indexRedirect(){
-        return "redirect:/reunion/list";
+        return "redirect:/member/login";
     }
 
 }
