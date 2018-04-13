@@ -43,7 +43,6 @@ public class BoardReplyController {
     public String list(BoardReply reply, ModelMap modelMap) throws Exception {
         List<BoardReply> replyList = boardReplyService.list(reply);
         modelMap.addAttribute("replyList", replyList);
-        System.out.println(replyList.get(1).getMemberId());
         return "reply/replyView";
     }
 
@@ -56,13 +55,9 @@ public class BoardReplyController {
         return "redirect:/list_reply";
     }
 
-    @PutMapping("/delete")
-    public String delete(BoardReply reply,int no,ModelMap modelMap) throws Exception {
-        // jsp에서 가져온 no로 삭제...
-        boardReplyService.delete(no);
-        List<BoardReply> replyList = boardReplyService.list(reply);
-        modelMap.addAttribute("replyList", replyList);
-
+    @DeleteMapping(value = "/delete_reply}")
+    public String delete(BoardReply reply,ModelMap modelMap) throws Exception {
+        boardReplyService.delete(reply);
         return "redirect:/list_reply";
     }
 

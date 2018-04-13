@@ -38,8 +38,6 @@ public class BoardReplyDao {
 
     public int insert(BoardReply reply){
         SqlParameterSource params = new BeanPropertySqlParameterSource(reply);
-        // 자동으로 id를 생성할 경우에는 아래와 같이 생성된 pk를 반환할 수 있다.
-//        int count = insertAction.execute(params);
         StringBuffer sql = new StringBuffer();
         sql.append("INSERT INTO board_reply(content, member_id, board_no, reg_date, edit_date) ");
         sql.append("VALUES( :content, :memberId, :boardNo, now(), now())");
@@ -47,9 +45,9 @@ public class BoardReplyDao {
         return jdbc.update(sql.toString(), params);
     }
 
-    public int delete(int no){
-        Map<String, ?> params = Collections.singletonMap("no", no);
-        return jdbc.update("delete from board_reply where no = :no", params);
+    public int delete(BoardReply reply){
+        SqlParameterSource params = new BeanPropertySqlParameterSource(reply);
+        return jdbc.update("delete from board_reply where no = :no ", params);
     }
 
     public int update(BoardReply boardReply){
