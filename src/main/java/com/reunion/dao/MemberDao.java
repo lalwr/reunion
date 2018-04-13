@@ -29,32 +29,31 @@ public class MemberDao {
     }
 
     public List<Member> selectAll() {
-        return jdbc.query("SELECT no AS no ,id AS id ,password AS password ,name AS name ," +
-                "reg_date AS regDate ,edit_date AS editDate FROM member order by no desc", Collections.emptyMap(), rowMapper);
+        return jdbc.query("SELECT no, id, password, name, reg_date, edit_date FROM member order by no", Collections.emptyMap(), rowMapper);
     }
 
-    public int insertReunion(Member member){
+    public int insertMember(Member member){
         SqlParameterSource params = new BeanPropertySqlParameterSource(member);
         // 자동으로 id를 생성할 경우에는 아래와 같이 생성된 pk를 반환할 수 있다.
         return insertAction.executeAndReturnKey(params).intValue();
     }
 
-    public int deleteReunion(int no){
+    public int deleteMember(int no){
         Map<String, ?> params = Collections.singletonMap("no", no);
         return jdbc.update("delete from member where no = :no", params);
     }
 
-    public int updateReunion(Member member){
+    public int updateMember(Member member){
         SqlParameterSource params = new BeanPropertySqlParameterSource(member);
         return jdbc.update("update member set password = :password, name = :name, edit_date = :editDate where no = :no", params);
     }
 
-    public Member selectReunion(int no){
-        Map<String, ?> params = Collections.singletonMap("no", no);
-        return jdbc.queryForObject("SELECT no AS no ,id AS id ,password AS password ,name AS name ,reg_date AS regDate ," +
-                "edit_date AS editDate FROM member WHERE no = :no", params, rowMapper);
-    }
-
-    public void list(Reunion reunion) {
+    public Member selectMember(String id){
+        Map<String, ?> params = Collections.singletonMap("id", id);
+        try{
+            return jdbc.queryForObject("SELECT no, id, password, name, reg_date, edit_date FROM member WHERE id = :id", params, rowMapper);
+        }catch (Exception e){
+            return null;
+        }
     }
 }
