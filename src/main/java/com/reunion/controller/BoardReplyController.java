@@ -55,7 +55,7 @@ public class BoardReplyController {
         return "redirect:/list_reply";
     }
 
-    @DeleteMapping(value = "/delete_reply}")
+    @PostMapping(value = "/delete_reply}")
     public String delete(BoardReply reply,ModelMap modelMap) throws Exception {
         boardReplyService.delete(reply);
         return "redirect:/list_reply";
