@@ -11,10 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -40,27 +39,31 @@ public class BoardReplyController {
     @Autowired
     BoardReplyService boardReplyService;
 
-//    @RequestMapping(value = "/write_reply", method = RequestMethod.GET)
-//    public String viewReply(BoardReply reply ,ModelMap modelMap) throws Exception {
-//        List<BoardReply> replyList = boardReplyService.list(reply);
-//        modelMap.addAttribute("replyList", replyList);
-//        System.out.println(replyList.size());
-//        return "reply/replyView";
-//    }
-
-    @GetMapping(value = "/write_reply")
-    public String reunion(BoardReply reply, ModelMap modelMap) throws Exception {
+    @GetMapping(value = "/list_reply")
+    public String list(BoardReply reply, ModelMap modelMap) throws Exception {
         List<BoardReply> replyList = boardReplyService.list(reply);
-
         modelMap.addAttribute("replyList", replyList);
+        System.out.println(replyList.get(1).getMemberId());
         return "reply/replyView";
     }
 
-//    @RequestMapping(value = "/list_reply",method = RequestMethod.POST)
-//    public String reunion(ModelMap modelMap) throws Exception {
-//        List<Reunion> reunionList = reunionService.list(reunion);
-//
-//        modelMap.addAttribute("reunionList", reunionList);
-//        return "redirect:reply/replyView";
-//    }
+    @PostMapping(value = "/write_reply")
+    public String write(BoardReply reply, ModelMap modelMap) throws Exception {
+        reply.setMemberId("oh");
+        reply.setBoardNo(1);
+        boardReplyService.insert(reply);
+
+        return "redirect:/list_reply";
+    }
+
+    @PutMapping("/delete")
+    public String delete(BoardReply reply,int no,ModelMap modelMap) throws Exception {
+        // jsp에서 가져온 no로 삭제...
+        boardReplyService.delete(no);
+        List<BoardReply> replyList = boardReplyService.list(reply);
+        modelMap.addAttribute("replyList", replyList);
+
+        return "redirect:/list_reply";
+    }
+
 }

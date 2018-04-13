@@ -32,15 +32,19 @@ public class BoardReplyDao {
     }
 
     public List<BoardReply> list() throws Exception{
-        return jdbc.query("SELECT no AS no ,content AS content ,member_id AS id ,board_no AS boardNo, " +
+        return jdbc.query("SELECT no AS no ,content AS content ,member_id AS memberId ,board_no AS boardNo, " +
                 "reg_date AS regDate ,edit_date AS editDate FROM board_reply order by no desc", Collections.emptyMap(), rowMapper);
     }
 
     public int insert(BoardReply reply){
         SqlParameterSource params = new BeanPropertySqlParameterSource(reply);
         // 자동으로 id를 생성할 경우에는 아래와 같이 생성된 pk를 반환할 수 있다.
-        int count = insertAction.execute(params);
-        return count;
+//        int count = insertAction.execute(params);
+        StringBuffer sql = new StringBuffer();
+        sql.append("INSERT INTO board_reply(content, member_id, board_no, reg_date, edit_date) ");
+        sql.append("VALUES( :content, :memberId, :boardNo, now(), now())");
+
+        return jdbc.update(sql.toString(), params);
     }
 
     public int delete(int no){
@@ -50,8 +54,8 @@ public class BoardReplyDao {
 
     public int update(BoardReply boardReply){
         SqlParameterSource params = new BeanPropertySqlParameterSource(boardReply);
-        return jdbc.update("update board_reply set content = :content, reg_date = :regDate, " +
-                "edit_date = :editDate where board_no = :boardNo and no = :no and member_id = :memberId", params);
+        return jdbc.update("update board_reply set content = :content, " +
+                "edit_date = now() where board_no = :boardNo and no = :no and member_id = :memberId", params);
     }
 
 //    public BoardReply selectReply(int no){

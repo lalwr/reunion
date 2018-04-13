@@ -16,13 +16,3 @@ public class BoardReply {
     int boardNo;
 }
 
-
-/*
-no     	    INTEGER NOT NULL auto_increment COMMENT '댓글 번호',
-  content 	    VARCHAR(500) NOT NULL COMMENT '댓글 내용',
-  member_id     VARCHAR(50) NOT NULL COMMENT '아이디',
-  reg_date      DATETIME NOT NULL COMMENT '등록일시',
-  edit_date     DATETIME NOT NULL COMMENT '수정일시',
-  board_no      INTEGER NOT NULL COMMENT '게시글 번호',
-  PRIMARY KEY  (no),
- */
