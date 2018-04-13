@@ -1,4 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <title>Login</title>
@@ -20,6 +23,7 @@
                     if("success" == this.response){
                         var msg = "환영합니다. " + document.getElementById("id").value + "님";
                         alert(msg);
+                        window.location.href = "/reunion/list";
                     }else if("incorrectPw" == this.response){
                         alert("비밀번호가 일치하지 않습니다.");
                     }else{

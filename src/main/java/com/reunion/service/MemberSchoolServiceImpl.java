@@ -21,8 +21,8 @@ public class MemberSchoolServiceImpl implements MemberSchoolService{
 
     @Override
     @Transactional(readOnly = true)
-    public MemberSchool getMemberSchool(int memberSchoolId) {
-        return memberSchoolDao.selectMemberSchool(memberSchoolId);
+    public MemberSchool getMemberSchool(int memberNo) {
+        return memberSchoolDao.selectMemberSchool(memberNo);
     }
 
     @Override

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -27,16 +29,25 @@ public class LoginController {
     MemberSchoolService memberSchoolService;
 
     @GetMapping(value = "/login")
-    public String login(){
-        return "/memberManaging/login";
+    public String login(HttpServletRequest request){
+        HttpSession httpSession = request.getSession();
+        if(httpSession.isNew()){
+            return "/memberManaging/login";
+        }else{
+            return "redirect:/reunion/list";
+        }
+
     }
     @ResponseBody
     @PostMapping(value = "/loginCheck")
-    public String loginCheck(@RequestParam(name = "id") String id, @RequestParam(name = "password") String password, ModelMap modelMap){
+    public String loginCheck(HttpServletRequest request, @RequestParam(name = "id") String id, @RequestParam(name = "password") String password, ModelMap modelMap){
         Member member = memberService.getMember(id);
         if(member != null){
             if(member.getPassword().equals(password)){
-//                MemberSchool logInfo = memberSchoolService.getMemberSchool(member.getNo()); // 로그인 성공
+                HttpSession session = request.getSession();
+                String loginId = member.getId(); // 로그인 성공
+                session.setAttribute("loginId", loginId);
+                modelMap.addAttribute("loginId", loginId);
                 return "success";
             }else{ // 비밀번호 불일치
                 return "incorrectPw";
@@ -44,9 +55,6 @@ public class LoginController {
         }
         // 아이디 존재하지 않음.
         return "noId";
-
-
-
 
     }
 

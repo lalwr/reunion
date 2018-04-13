@@ -7,7 +7,6 @@
     <title>Join</title>
 </head>
 <body>
-
 <form method="post" action="/member/signUp">
     아이디 :  <input type="text" name="id" id = "id"/>
     <input type="button" value="중복 확인" id = "idCheck"/><br>
