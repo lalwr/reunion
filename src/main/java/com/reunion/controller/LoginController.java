@@ -1,46 +1,54 @@
 package com.reunion.controller;
 
-import com.reunion.dao.MemberDao;
-import com.reunion.dao.MemberSchoolDao;
-import com.reunion.dao.ReunionDao;
 import com.reunion.domain.Member;
 import com.reunion.domain.MemberSchool;
 import com.reunion.domain.School;
-import com.reunion.dao.SchoolDao;
+import com.reunion.service.MemberSchoolService;
+import com.reunion.service.MemberService;
+import com.reunion.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping (value = "/member", produces="text/html;charset=UTF-8")
+
 public class LoginController {
     @Autowired
-    SchoolDao schoolDao;
+    SchoolService schoolService;
     @Autowired
-    MemberDao memberDao;
+    MemberService memberService;
     @Autowired
-    MemberSchoolDao memberSchoolDao;
+    MemberSchoolService memberSchoolService;
 
     @GetMapping(value = "/login")
-    public String reunionLogin(){
-        return "login";
+    public String login(){
+        return "/memberManaging/login";
     }
-    @PostMapping(value = "/login")
-    public String reunionPostLogin(){
-        return "login";
+
+    @ResponseBody
+    @GetMapping(value = "/idCheck")
+    public String idCheck(@RequestParam(name = "id") String id,ModelMap modelMap){
+        boolean idCheck = (memberService.getMember(id) == null);
+        modelMap.addAttribute("idCheck",idCheck);
+        if(idCheck){
+            return "사용 가능한 아이디 입니다.";
+        }else{
+            return "이미 등록된 아이디 입니다.";
+        }
     }
 
     @GetMapping(value = "/join")
-    public String reunionJoin(ModelMap modelMap){
-        List<School> schools = schoolDao.selectAll();
+    public String join(ModelMap modelMap){
+        List<School> schools = schoolService.getSchools();
         modelMap.addAttribute("schools", schools);
-        return "join";
+
+        return "/memberManaging/join";
     }
     @PostMapping(value = "/signUp")
     public String signUp(@RequestParam(name = "id") String id, @RequestParam(name = "name") String name,
@@ -50,16 +58,16 @@ public class LoginController {
         member.setId(id);
         member.setPassword(password);
         member.setName(name);
-        member.setRegDate("2018-04-11");
-        member.setEditDate("2018-04-11");
-        int memberNo = memberDao.insertReunion(member);
-        int schoolNo = schoolDao.selectSchool(school).getNo();
+        member.setRegDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
+        member.setEditDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
+        int memberNo = memberService.addMember(member);
+        int schoolNo = schoolService.getSchool(school).getNo();
         MemberSchool ms = new MemberSchool();
         ms.setMemberNo(memberNo);
         ms.setSchoolNo(schoolNo);
-        memberSchoolDao.insert(ms);
+        memberSchoolService.addMemberSchool(ms);
 
 
-        return "login";
+        return "redirect:/login";
     }
 }
