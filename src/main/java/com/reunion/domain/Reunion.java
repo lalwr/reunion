@@ -9,7 +9,7 @@ import java.io.Serializable;
 @ToString
 @AllArgsConstructor //모든 필드 값을 파라미터로 받는 생성자 생성
 @NoArgsConstructor //디폴트 생성자를 생성
-public class Reunion extends Condition implements Serializable {
+public class Reunion {
     private String no;
     private String subject;
     private String content;

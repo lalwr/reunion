@@ -13,11 +13,11 @@ function pageNavigation(page) {
     document.getElementById('page').value = page;
     loadGrid();
 }
-function detail(no) {
-    window.location.href = "${contextPath}/reunion/detail/" + no;
+function view(no) {
+    window.location.href = "${contextPath}/reunion/view/" + no;
 }
-function detailNew() {
-    window.location.href = "${contextPath}/reunion/detail/new";
+function writeNew() {
+    window.location.href = "${contextPath}/reunion/write";
 }
 </script>
 <!DOCTYPE html>
@@ -45,7 +45,7 @@ function detailNew() {
                 <input type="hidden" name="schoolNo" value="${list.schoolNo}">
                 <input type="hidden" name="categoryNo" value="${list.categoryNo}">
                 <td>${list.no}</td>
-                <td><a href="javascript:;" onclick="detail(${list.no}); return false;">${list.subject}</a></td>
+                <td><a href="javascript:;" onclick="view(${list.no}); return false;">${list.subject}</a></td>
                 <td>${list.content}</td>
                 <td>${list.regId}</td>
                 <td>${list.regDate}</td>
@@ -54,7 +54,7 @@ function detailNew() {
         </tbody>
     </table>
     </form>
-    <button type="button" class="btn btn-default" onclick="detailNew()">작성</button>
+    <button type="button" class="btn btn-default" onclick="writeNew()">작성</button>
     <reunionUiLib:paging linkFunction="pageNavigation" pagingInfo="${pagingInfo}" />
 </div>
 

@@ -1,6 +1,7 @@
 package com.reunion.controller;
 
 import com.reunion.common.ReunionPagingInfo;
+import com.reunion.domain.Condition;
 import com.reunion.domain.Reunion;
 import com.reunion.service.ReunionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,42 +19,53 @@ public class ReunionController {
     ReunionService reunionService;
 
     @GetMapping(value = "/list")
-    public String listReunion(@ModelAttribute("reunion") Reunion reunion, ModelMap modelMap) throws Exception {
-        List<Reunion> reunionList = reunionService.listReunion(reunion);
-        int totCount = reunionService.listCnt(reunion);
-        reunion.setTotCount(totCount);
+    public String listReunion(@ModelAttribute("condition") Condition condition, ModelMap modelMap) throws Exception {
+        List<Reunion> reunionList = reunionService.listReunion(condition);
+        int totCount = reunionService.listCnt(condition);
+        condition.setTotCount(totCount);
         modelMap.addAttribute("reunionList", reunionList);
 
         ReunionPagingInfo pagingInfo = new ReunionPagingInfo();
-        pagingInfo.setPage(reunion.getPage());
-        pagingInfo.setTotCount(reunion.getTotCount());
+        pagingInfo.setPage(condition.getPage());
+        pagingInfo.setTotCount(condition.getTotCount());
         modelMap.addAttribute("pagingInfo",pagingInfo);
 
         return "reunion/reunionList";
     }
 
+    @GetMapping(value = "/write")
+    public String writeReunion(@ModelAttribute("condition") Condition condition, ModelMap modelMap) throws Exception {
+
+        Reunion reunion =  new Reunion();
+        reunion.setCategoryNo("1"); //임시 설정
+        reunion.setSchoolNo("1"); //임시 설정
+        modelMap.addAttribute("reunion", reunion);
+
+        return "reunion/reunionWrite";
+    }
+
     @PostMapping(value = "/write")
-    public String writeReunion(Reunion reunion, ModelMap modelMap) throws Exception {
+    public String RegisterReunion(Reunion reunion, ModelMap modelMap) throws Exception {
         reunion.setRegId("kim");
         reunionService.writeReunion(reunion);
 
         return "redirect:/reunion/list";
     }
 
-    @GetMapping(value = "/detail/{reunionNo}")
-    public String detailReunion(Reunion reunion, @PathVariable String reunionNo, ModelMap modelMap) throws Exception {
+    @GetMapping(value = "/view/{reunionNo}")
+    public String viewReunion(@ModelAttribute("condition") Condition condition, @PathVariable String reunionNo, ModelMap modelMap) throws Exception {
 
-        if(reunionNo.equals("new")){
-            Reunion emptyReunion =  new Reunion();
-            emptyReunion.setCategoryNo("1"); //임시 설정
-            emptyReunion.setSchoolNo("1"); //임시 설정
-            modelMap.addAttribute("result", emptyReunion);
-            return "reunion/reunionView";
-        }else{
-            modelMap.addAttribute("result", reunionService.detailReunion(reunionNo));
-        }
+        modelMap.addAttribute("result", reunionService.detailReunion(reunionNo));
 
         return "reunion/reunionView";
+    }
+
+    @GetMapping(value = "/detail/{reunionNo}")
+    public String detailReunion(@ModelAttribute("condition") Condition condition, @PathVariable String reunionNo, ModelMap modelMap) throws Exception {
+
+        modelMap.addAttribute("result", reunionService.detailReunion(reunionNo));
+
+        return "reunion/reunionDetail";
     }
 
     @PutMapping(value = "/update")

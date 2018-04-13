@@ -1,6 +1,7 @@
 package com.reunion.service;
 
 import com.reunion.dao.ReunionDao;
+import com.reunion.domain.Condition;
 import com.reunion.domain.Reunion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,14 @@ public class ReunionServiceImpl implements ReunionService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Reunion> listReunion(Reunion reunion) throws Exception{
-        return reunionDao.listReunion(reunion);
+    public List<Reunion> listReunion(Condition condition) throws Exception{
+        return reunionDao.listReunion(condition);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public int listCnt(Condition conditionn) throws Exception {
+        return reunionDao.listCnt(conditionn);
     }
 
     @Override
@@ -40,11 +47,6 @@ public class ReunionServiceImpl implements ReunionService{
 
     @Override
     @Transactional
-    public int listCnt(Reunion reunion) throws Exception {
-        return reunionDao.listCnt(reunion);
-    }
-
-    @Override
     public int writeReunion(Reunion reunion) throws Exception {
         return reunionDao.writeReunion(reunion);
     }

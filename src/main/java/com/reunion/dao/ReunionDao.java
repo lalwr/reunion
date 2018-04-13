@@ -1,5 +1,6 @@
 package com.reunion.dao;
 
+import com.reunion.domain.Condition;
 import com.reunion.domain.Reunion;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -35,19 +36,24 @@ public class ReunionDao {
                 .usingGeneratedKeyColumns("no"); // 자동으로 id가 생성될 경우
     }
 
-    public List<Reunion> listReunion(Reunion reunion) throws Exception{
+    public List<Reunion> listReunion(Condition condition) throws Exception{
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT no AS no ,subject AS subject ,content AS content ,reg_id AS regId ,DATE_FORMAT(reg_Date, 'YYYY-MM-DD HH:MI:SS') AS regDate,");
-        sql.append("edit_date AS editDate ,school_no AS schoolNo ,category_no AS categoryNo FROM board order by no desc LIMIT :pageVal , :pageSize");
+        sql.append("SELECT no AS no ,subject AS subject ,content AS content ,reg_id AS regId ,DATE_FORMAT(reg_Date,'%Y년%m월%d일 %H시%i분%S초') AS regDate,");
+        sql.append("DATE_FORMAT(edit_date,'%Y년%m월%d일 %H시%i분%S초') AS editDate ,school_no AS schoolNo ,category_no AS categoryNo FROM board order by no desc LIMIT :pageVal , :pageSize");
 
-        SqlParameterSource params = new BeanPropertySqlParameterSource(reunion);
+        SqlParameterSource params = new BeanPropertySqlParameterSource(condition);
         return jdbc.query( sql.toString() , params, rowMapper);
+    }
+
+    public int listCnt(Condition condition) throws Exception{
+        SqlParameterSource params = new BeanPropertySqlParameterSource(condition);
+        return jdbc.queryForObject("SELECT COUNT(*) FROM board", params, Integer.class);
     }
 
     public Reunion detailReunion(String reunionNo) throws Exception{
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT no AS no ,subject AS subject ,content AS content ,reg_id AS regId , reg_date AS regDate, edit_date AS editDate,");
-        sql.append("school_no AS schoolNo ,category_no AS categoryNo FROM board where no = :no");
+        sql.append("SELECT no AS no ,subject AS subject ,content AS content ,reg_id AS regId , DATE_FORMAT(reg_Date,'%Y년%m월%d일 %H시%i분%S초') AS regDate,");
+        sql.append("DATE_FORMAT(edit_date,'%Y년%m월%d일 %H시%i분%S초') AS editDate , school_no AS schoolNo ,category_no AS categoryNo FROM board where no = :no");
         Map<String, ?> params = Collections.singletonMap("no", reunionNo);
         try {
             // 결과가 없으면 Exception이 발생한다.
@@ -66,11 +72,6 @@ public class ReunionDao {
     public int deleteReunion(Reunion reunion) throws Exception{
         SqlParameterSource params = new BeanPropertySqlParameterSource(reunion);
         return jdbc.update("delete from board where no = :no", params);
-    }
-
-    public int listCnt(Reunion reunion) throws Exception{
-        SqlParameterSource params = new BeanPropertySqlParameterSource(reunion);
-        return jdbc.queryForObject("SELECT COUNT(*) FROM board", params, Integer.class);
     }
 
     public int writeReunion(Reunion reunion) {
