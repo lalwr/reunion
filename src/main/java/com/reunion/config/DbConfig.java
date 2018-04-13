@@ -37,6 +37,7 @@ public class DbConfig {
         return dataSource;
     }
 
+    /* 트랜잭션 처리*/
     @Bean
     public PlatformTransactionManager transactionManger() {
         return new DataSourceTransactionManager(dataSource());
