@@ -8,16 +8,22 @@
 </head>
 <body>
 
-<form method="post" action="/signUp">
-    아이디 :  <input type="text" name="id"/>
-    <input type="button" value="중복 확인" id = "idDubCheck""/><br>
+<form method="post" action="/member/signUp">
+    아이디 :  <input type="text" name="id" id = "id"/>
+    <input type="button" value="중복 확인" id = "idCheck"/><br>
+    <script>
+    </script>
+
     성명 :  <input type="text" name="name"/><br>
     비밀번호 :  <input type="password" name="password" id = "pw"/><br>
-    비밀번호 재입력:  <input type="password" name="pwVerify" id = "pw2"/>
+    비밀번호 재입력:  <input type="password" name="pwVerify" id = "pwC"/>
     <input type="button" id="pwCheck" onclick="pwCheck_click();" value="비밀번호 확인" /><br>
+
     <script>
         function pwCheck_click() {
-            if(document.getElementById("pw").value == document.getElementById("pw2").value){
+            if(document.getElementById("pw").value == ""){
+                alert("비밀번호 입력 필요");
+            }else if(document.getElementById("pw").value == document.getElementById("pwC").value){
                 alert("비밀번호 확인");
                 button.disabled = false;
             }else{
