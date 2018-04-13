@@ -30,6 +30,25 @@ public class LoginController {
     public String login(){
         return "/memberManaging/login";
     }
+    @ResponseBody
+    @PostMapping(value = "/loginCheck")
+    public String loginCheck(@RequestParam(name = "id") String id, @RequestParam(name = "password") String password, ModelMap modelMap){
+        Member member = memberService.getMember(id);
+        if(member != null){
+            if(member.getPassword().equals(password)){
+//                MemberSchool logInfo = memberSchoolService.getMemberSchool(member.getNo()); // 로그인 성공
+                return "success";
+            }else{ // 비밀번호 불일치
+                return "incorrectPw";
+            }
+        }
+        // 아이디 존재하지 않음.
+        return "noId";
+
+
+
+
+    }
 
     @ResponseBody
     @GetMapping(value = "/idCheck")
@@ -37,9 +56,9 @@ public class LoginController {
         boolean idCheck = (memberService.getMember(id) == null);
         modelMap.addAttribute("idCheck",idCheck);
         if(idCheck){
-            return "사용 가능한 아이디 입니다.";
+            return "true"; //true
         }else{
-            return "이미 등록된 아이디 입니다.";
+            return "false"; // false
         }
     }
 
@@ -68,6 +87,6 @@ public class LoginController {
         memberSchoolService.addMemberSchool(ms);
 
 
-        return "redirect:/login";
+        return "redirect:/member/login";
     }
 }
