@@ -1,66 +1,63 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="formAction" value="${empty result.no ? '/reunion/write' : '/reunion/update'}"/>
+<c:set var="hieenMethod" value="${empty result.no ? '' : 'put'}"/>
 <script type="text/javascript">
-    $(document).ready(function()
-    {
-        $("#save").click(function()
-        {
-            $.ajax({
-                type : "POST",
-                url : "${contextPath}/reunion/update",
-                cache : false,
-                data : $("#form").serialize(),
-                success: function(response){
-                    window.location.href = "${contextPath}/reunion/list";
-                }
-            });
-        });
-    });
+$(document).ready(function()
+{
+
+});
+function deleteReunion() {
+    document.getElementById("form").action = "/reunion/delete";
+    document.getElementById("method").value = "delete";
+    document.getElementById("form").submit();
+}
 </script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <title>게시판 상세</title>
+    <title>게시판 상세 ${result.no}</title>
 </head>
 <body>
-<input type="hidden" name="schoolNo" value="${reunionContent.schoolNo}">
-<input type="hidden" name="categoryNo" value="${reunionContent.categoryNo}">
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header">상세 화면</h3>
     </div>
 </div>
+<form id="form" name="form" method="post" action="${formAction}">
+<input type="hidden" name="_method" value="${hieenMethod}" id="method">
+<input type="hidden" name="schoolNo" value="${result.schoolNo}">
+<input type="hidden" name="categoryNo" value="${result.categoryNo}">
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-primary">
             <div class="panel-body">
-                <form id="form" name="form">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>번호</label>
-                                <input class="form-control" id="funnelId" name="funnelId" value="${reunionContent.no}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="번호">
+                                <input class="form-control" id="no" name="no" value="${result.no}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="번호">
                             </div>
                             <div class="form-group">
                                 <label>제목</label>
-                                <input class="form-control" name="funnelNm" value="${reunionContent.subject}" placeholder="제목">
+                                <input class="form-control" name="subject" value="${result.subject}" placeholder="제목">
                             </div>
                             <div class="form-group">
                                 <label>내용</label>
-                                <input class="form-control" name="funnelNm" value="${reunionContent.content}" placeholder="내용">
+                                <input class="form-control" name="content" value="${result.content}" placeholder="내용">
                             </div>
                             <div class="form-group">
                                 <label>작성자</label>
-                                <input class="form-control" name="funnelNm" value="${reunionContent.regId}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성자">
+                                <input class="form-control" name="regId" value="${result.regId}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성자">
                             </div>
                             <div class="form-group">
                                 <label>작성일</label>
-                                <input class="form-control" name="funnelNm" value="${reunionContent.regDate}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성일">
+                                <input class="form-control" name="regDate" value="${result.regDate}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성일">
                             </div>
                         </div>
                     </div>
-                </form>
+
             </div>
         </div>
     </div>
@@ -69,8 +66,10 @@
     <div class="col-lg-12">
         <div class="panel panel-info">
             <div class="panel-body panel-view">
-                <button type="button" class="btn btn-default" id="save">저장</button>
+                <input type="submit" class="btn btn-default" id="save">
+                <button type="button" class="btn btn-default" id="delete" onclick="deleteReunion()">삭제</button>
             </div>
         </div>
     </div>
 </div>
+</form>
