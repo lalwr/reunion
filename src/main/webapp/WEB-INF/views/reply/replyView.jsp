@@ -4,7 +4,7 @@
 <script type="text/javascript">
     function deleteReply(no) {
          document.getElementById("form").action = "/delete_reply";
-         document.getElementById("method").value = "delete";
+         // document.getElementById("method").value = "delete";
          document.getElementById("form").submit();
     }
 </script>
