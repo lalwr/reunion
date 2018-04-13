@@ -35,7 +35,7 @@ public class BoardReplyDaoTest {
      @Test
     public void testSelectAll() throws Exception{
         //given
-        List<BoardReply> replies = boardReplyDao.selectAll();
+        List<BoardReply> replies = boardReplyDao.list();
 
         // then
         Assert.assertEquals(3, replies.size());
@@ -74,7 +74,7 @@ public class BoardReplyDaoTest {
         reply.setBoardNo(1);
 
         int replyNo = boardReplyDao.insert(reply);
-        List<BoardReply> replies = boardReplyDao.selectAll();
+        List<BoardReply> replies = boardReplyDao.list();
         Assert.assertEquals(4, replies.size());
 
         // when
@@ -82,7 +82,7 @@ public class BoardReplyDaoTest {
         boardReplyDao.delete(3);
 
         // then
-        List<BoardReply> replies2 = boardReplyDao.selectAll();
+        List<BoardReply> replies2 = boardReplyDao.list();
         Assert.assertEquals(replies2.size(), replies.size() - 1);
 //        System.out.println(replies2.size());
     }

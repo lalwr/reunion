@@ -22,6 +22,8 @@ public class BoardReplyDao {
     private SimpleJdbcInsert insertAction;
     private RowMapper<BoardReply> rowMapper = BeanPropertyRowMapper.newInstance(BoardReply.class);
 
+//    public BoardReplyDao(){}
+
     public BoardReplyDao(DataSource dataSource) {
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
         this.insertAction = new SimpleJdbcInsert(dataSource)
@@ -29,7 +31,7 @@ public class BoardReplyDao {
                 .usingGeneratedKeyColumns("no"); // 자동으로 id가 생성될 경우
     }
 
-    public List<BoardReply> selectAll() {
+    public List<BoardReply> list() throws Exception{
         return jdbc.query("SELECT no AS no ,content AS content ,member_id AS id ,board_no AS boardNo, " +
                 "reg_date AS regDate ,edit_date AS editDate FROM board_reply order by no desc", Collections.emptyMap(), rowMapper);
     }
