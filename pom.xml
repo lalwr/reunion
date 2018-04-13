@@ -203,7 +203,22 @@
             <version>${tiles3.version}</version>
         </dependency>
         <!-- tiles3 -->
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.10.19</version>
+        </dependency>
     </dependencies>
+
+    <!-- Tag Library 추가-->
+    <jsp-config>
+        <taglib>
+            <taglib-uri>reunionUiLib</taglib-uri>
+            <taglib-location>/WEB-INF/ui/ui.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+    <!-- Tag Library 추가-->
 
     <build>
         <finalName>reunion</finalName>
