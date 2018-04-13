@@ -12,6 +12,19 @@
     아이디 :  <input type="text" name="id" id = "id"/>
     <input type="button" value="중복 확인" id = "idCheck"/><br>
     <script>
+        document.getElementById("idCheck").onclick = function(){
+            idCheck(document.getElementById("id").value, "idCheck");
+        }
+        function idCheck(str, url){
+            var req = new XMLHttpRequest();
+            req.onreadystatechange = function () {
+                if(this.readyState == 4 && this.status == 200){
+                    alert(this.response);
+                }
+            }
+            req.open("GET", url +"?id="+str);
+            req.send();
+        }
     </script>
 
     성명 :  <input type="text" name="name"/><br>

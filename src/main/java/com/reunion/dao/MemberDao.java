@@ -48,8 +48,12 @@ public class MemberDao {
         return jdbc.update("update member set password = :password, name = :name, edit_date = :editDate where no = :no", params);
     }
 
-    public Member selectMember(int no){
-        Map<String, ?> params = Collections.singletonMap("no", no);
-        return jdbc.queryForObject("SELECT no, id, password, name, reg_date, editDate FROM member WHERE no = :no", params, rowMapper);
+    public Member selectMember(String id){
+        Map<String, ?> params = Collections.singletonMap("id", id);
+        try{
+            return jdbc.queryForObject("SELECT no, id, password, name, reg_date, edit_date FROM member WHERE id = :id", params, rowMapper);
+        }catch (Exception e){
+            return null;
+        }
     }
 }

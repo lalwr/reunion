@@ -33,7 +33,7 @@ public class SchoolDaoTest {
         Assert.assertTrue(true);
     }
 
-   /* @Test
+    @Test
     public void testSelectAll() throws Exception{
         List<School> schools = schoolDao.selectAll();
         Assert.assertEquals(1, schools.size());
@@ -109,5 +109,5 @@ public class SchoolDaoTest {
         // then
         List<School> school2 = schoolDao.selectAll();
         Assert.assertEquals(school2.size(), schools.size() - 1);
-    }*/
+    }
 }
