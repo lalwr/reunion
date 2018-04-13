@@ -6,14 +6,11 @@ $(document).ready(function()
 {
 
 });
-function updateReunion() {
-    window.location.href = "${contextPath}/reunion/detail/" + + document.getElementById('no').value;;
-}
 </script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <title>게시판 상세</title>
+    <title>게시판 작성</title>
 </head>
 <body>
 <div class="row">
@@ -21,45 +18,49 @@ function updateReunion() {
         <h3 class="page-header">상세 화면</h3>
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-primary">
-            <div class="panel-body">
+<form id="form" name="form" method="post" action="${contextPath}/reunion//write">
+    <input type="hidden" name="schoolNo" value="${reunion.schoolNo}">
+    <input type="hidden" name="categoryNo" value="${reunion.categoryNo}">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>번호</label>
-                                <input class="form-control" id="no" name="no" value="${result.no}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="번호">
+                                <input class="form-control" id="no" name="no" readonly="readonly" style="background-color: #dcdcdc;" placeholder="번호">
                             </div>
                             <div class="form-group">
                                 <label>제목</label>
-                                <input class="form-control" name="subject" value="${result.subject}" readonly="readonly" placeholder="제목">
+                                <input class="form-control" name="subject"  placeholder="제목">
                             </div>
                             <div class="form-group">
                                 <label>내용</label>
-                                <input class="form-control" name="content" value="${result.content}" readonly="readonly" placeholder="내용">
+                                <input class="form-control" name="content"  placeholder="내용">
                             </div>
                             <div class="form-group">
                                 <label>작성자</label>
-                                <input class="form-control" name="regId" value="${result.regId}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성자">
+                                <input class="form-control" name="regId" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성자">
                             </div>
                             <div class="form-group">
                                 <label>작성일</label>
-                                <input class="form-control" name="regDate" value="${result.regDate}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성일">
+                                <input class="form-control" name="regDate" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성일">
                             </div>
                         </div>
                     </div>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-info">
-            <div class="panel-body panel-view">
-                <button type="button" class="btn btn-default" id="update" onclick="updateReunion()">수정</button>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-info">
+                <div class="panel-body panel-view">
+                    <input type="submit" class="btn btn-default" id="save">
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>

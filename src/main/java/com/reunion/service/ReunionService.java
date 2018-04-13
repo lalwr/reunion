@@ -1,27 +1,22 @@
 package com.reunion.service;
 
-import com.reunion.dao.ReunionDao;
+import com.reunion.domain.Condition;
 import com.reunion.domain.Reunion;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class ReunionService {
+public interface ReunionService {
 
-    @Autowired
-    ReunionDao reunionDao;
+    public List<Reunion> listReunion(Condition condition) throws Exception;
 
-    public List<Reunion> list(Reunion reunion) throws Exception{
-        return reunionDao.list(reunion);
-    }
+    public int listCnt(Condition condition) throws Exception;
 
-    public Reunion content(Reunion reunion)  throws Exception{
-        return reunionDao.content(reunion);
-    }
+    public Reunion detailReunion(String reunionNo) throws Exception;
 
-    public int update(Reunion reunion)  throws Exception{
-        return reunionDao.update(reunion);
-    }
+    public int updateReunion(Reunion reunion) throws Exception;
+
+    public int deleteReunion(Reunion reunionNo) throws Exception;
+
+    public int writeReunion(Reunion reunion) throws Exception;
+
 }

@@ -1,13 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<%@ taglib prefix="reunionUiLib" uri="reunionUiLib"%>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $("#reunion").find("#detail a").click(function() {
-            window.location.href = "${contextPath}/reunion/content/" + $(this).siblings("#reunionNo").val();
-            return false;
-        });
-    });
+$(document).ready(function() {
+
+});
+function loadGrid() {
+    window.location.href = "${contextPath}/reunion/list?page=" + document.getElementById('page').value;
+}
+function pageNavigation(page) {
+    document.getElementById('page').value = page;
+    loadGrid();
+}
+function view(no) {
+    window.location.href = "${contextPath}/reunion/view/" + no;
+}
+function writeNew() {
+    window.location.href = "${contextPath}/reunion/write";
+}
 </script>
 <!DOCTYPE html>
 <html lang="ko">
@@ -16,6 +27,8 @@
 </head>
 <body>
 <div class="container" id="reunion">
+    <form id="form" name="form">
+    <input type="hidden" id="page" name="page" value="${reunion.page}">
     <table class="table table-hover">
         <thead>
         <tr>
@@ -31,11 +44,8 @@
             <tr>
                 <input type="hidden" name="schoolNo" value="${list.schoolNo}">
                 <input type="hidden" name="categoryNo" value="${list.categoryNo}">
-                <td id="detail">
-                    <a href="javascript:;">${list.no}</a>
-                    <input type="hidden" id="reunionNo" value="${list.no}">
-                </td>
-                <td>${list.subject}</td>
+                <td>${list.no}</td>
+                <td><a href="javascript:;" onclick="view(${list.no}); return false;">${list.subject}</a></td>
                 <td>${list.content}</td>
                 <td>${list.regId}</td>
                 <td>${list.regDate}</td>
@@ -43,5 +53,8 @@
         </c:forEach>
         </tbody>
     </table>
-    <button type="button" class="btn btn-default" id="">작성</button>
+    </form>
+    <button type="button" class="btn btn-default" onclick="writeNew()">작성</button>
+    <reunionUiLib:paging linkFunction="pageNavigation" pagingInfo="${pagingInfo}" />
 </div>
+
