@@ -34,6 +34,7 @@ import java.util.List;
 */
 
 @Controller
+@RequestMapping(value="/boardreply")
 public class BoardReplyController {
 
     @Autowired
@@ -52,13 +53,13 @@ public class BoardReplyController {
         reply.setBoardNo(1);
         boardReplyService.insert(reply);
 
-        return "redirect:/list_reply";
+        return "redirect:/boardreply/list_reply";
     }
 
-    @PostMapping(value = "/delete_reply}")
-    public String delete(BoardReply reply,ModelMap modelMap) throws Exception {
-        boardReplyService.delete(reply);
-        return "redirect:/list_reply";
+    @GetMapping(value = "/delete_reply/{no}")
+    public String delete(@PathVariable(value="no")int no, BoardReply reply,ModelMap modelMap) throws Exception {
+        boardReplyService.delete(no);
+        return "reply/delete_reply";
     }
 
 }

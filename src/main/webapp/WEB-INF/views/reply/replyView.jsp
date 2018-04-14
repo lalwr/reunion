@@ -1,19 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<script type="text/javascript">
-    function deleteReply(no) {
-         document.getElementById("form").action = "/delete_reply";
-         // document.getElementById("method").value = "delete";
-         document.getElementById("form").submit();
-    }
-</script>
 <html lang="ko">
 <head>
     <title>댓글</title>
 </head>
 <body>
-<form id="form" action="/write_reply" method="post" name="textform">
+<form id="form" action="/boardreply/write_reply" method="post" name="textform">
     <input type="hidden" name="_method" value="" id="method">
     <table class="table">
         <tr>
@@ -37,7 +30,9 @@
                 <%--<c:if test="${memberId eq 'oh'}">--%>
                 <td><input type="button" id="button1" onclick="button1_click();" value="수정"/></td>
                 <input type=hidden name="no" value="${list.no}">
-                <td><button type="button" class="btn btn-default" id="delete" onclick="deleteReply(${list.no})">삭제</button></td>
+                <td><input type="button" value="삭제" onclick="location.href='delete_reply/${list.no}'"></td>
+                <%--<td><a href="delete.jsp?no=${list.no}">삭제</a></td>--%>
+
                 <%--</c:if>--%>
 
             </tr>

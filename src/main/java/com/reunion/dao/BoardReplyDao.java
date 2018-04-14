@@ -45,8 +45,9 @@ public class BoardReplyDao {
         return jdbc.update(sql.toString(), params);
     }
 
-    public int delete(BoardReply reply){
-        SqlParameterSource params = new BeanPropertySqlParameterSource(reply);
+    public int delete(int no){
+        Map<String, ?> params = Collections.singletonMap("no", no);
+
         return jdbc.update("delete from board_reply where no = :no ", params);
     }
 

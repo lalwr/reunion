@@ -26,7 +26,7 @@ public class BoardReplyService {
     }
 
     @Transactional
-    public int delete(BoardReply reply) throws Exception {
-        return boardReplyDao.delete(reply);
+    public int delete(int no) throws Exception {
+        return boardReplyDao.delete(no);
     }
 }
