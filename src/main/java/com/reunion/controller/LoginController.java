@@ -30,8 +30,7 @@ public class LoginController {
 
     @GetMapping(value = "/login")
     public String login(HttpServletRequest request){
-        HttpSession httpSession = request.getSession();
-        if(httpSession.isNew()){
+        if(request.getAttribute("loginId")==null){
             return "/memberManaging/login";
         }else{
             return "redirect:/reunion/list";
@@ -40,14 +39,12 @@ public class LoginController {
     }
     @ResponseBody
     @PostMapping(value = "/loginCheck")
-    public String loginCheck(HttpServletRequest request, @RequestParam(name = "id") String id, @RequestParam(name = "password") String password, ModelMap modelMap){
+    public String loginCheck(HttpServletRequest request, @RequestParam(name = "id") String id, @RequestParam(name = "password") String password){
         Member member = memberService.getMember(id);
         if(member != null){
-            if(member.getPassword().equals(password)){
+            if(member.getPassword().equals(password)){ // 로그인 성공
                 HttpSession session = request.getSession();
-                String loginId = member.getId(); // 로그인 성공
-                session.setAttribute("loginId", loginId);
-                modelMap.addAttribute("loginId", loginId);
+                session.setAttribute("loginId", member.getId());
                 return "success";
             }else{ // 비밀번호 불일치
                 return "incorrectPw";
@@ -58,12 +55,21 @@ public class LoginController {
 
     }
 
+//    @GetMapping(value = "/update")
+//    public String update(HttpServletRequest request, ModelMap modelMap){
+//        HttpSession session = request.getSession();
+//        if(session.isNew()){
+//            return "redirect:/member/login";
+//        }
+//        Member member = memberService.getMember(session.getAttribute("loginId"));
+//        modelMap.addAttribute("member", member);
+//        return "/memberManagin/update";
+//    }
+
     @ResponseBody
     @GetMapping(value = "/idCheck")
-    public String idCheck(@RequestParam(name = "id") String id,ModelMap modelMap){
-        boolean idCheck = (memberService.getMember(id) == null);
-        modelMap.addAttribute("idCheck",idCheck);
-        if(idCheck){
+    public String idCheck(@RequestParam(name = "id") String id){
+        if(memberService.getMember(id) == null){
             return "true"; //true
         }else{
             return "false"; // false
@@ -94,7 +100,12 @@ public class LoginController {
         ms.setSchoolNo(schoolNo);
         memberSchoolService.addMemberSchool(ms);
 
+        return "redirect:/member/login";
+    }
 
+    @GetMapping(value = "/logOut")
+    public String logOut(HttpServletRequest request){
+        request.getSession(false).invalidate();
         return "redirect:/member/login";
     }
 }
