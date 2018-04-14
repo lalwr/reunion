@@ -33,10 +33,15 @@ public class LoginController {
 
     @GetMapping(value = "/login")
     public String login(HttpServletRequest request){
-        if(request.getAttribute("loginId")==null){
-            return "/memberManaging/login";
+        HttpSession session = request.getSession(false);
+        if(session != null){
+            if(session.getAttribute("loginId")==null){
+                return "/memberManaging/login";
+            }else{
+                return "redirect:/reunion/list";
+            }
         }else{
-            return "redirect:/reunion/list";
+            return "/memberManaging/login";
         }
 
     }
