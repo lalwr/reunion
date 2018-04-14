@@ -1,19 +1,12 @@
 package com.reunion.controller;
 
-import com.reunion.dao.BoardReplyDao;
-import com.reunion.dao.MemberDao;
-import com.reunion.dao.MemberSchoolDao;
-import com.reunion.dao.SchoolDao;
 import com.reunion.domain.BoardReply;
-import com.reunion.domain.Reunion;
 import com.reunion.service.BoardReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /*
@@ -60,6 +53,22 @@ public class BoardReplyController {
     public String delete(@PathVariable(value="no")int no, BoardReply reply,ModelMap modelMap) throws Exception {
         boardReplyService.delete(no);
         return "reply/delete_reply";
+    }
+
+    @PostMapping("/update_reply/{no}")
+    public String update(@PathVariable(value="no")int no,@RequestParam(name = "updatecontent") String content,BoardReply reply,ModelMap modelMap) throws Exception{
+        List<BoardReply> replyList = boardReplyService.list(reply);
+        modelMap.addAttribute("replyList", replyList);
+        reply.setContent(content);
+        reply.setNo(no);
+        boardReplyService.update(reply);
+        return "redirect:/boardreply/list_reply";
+    }
+
+    @GetMapping("/update/form/{no}")
+    public String updateform(@PathVariable(value="no")int no) throws Exception{
+
+        return "reply/update_reply";
     }
 
 }

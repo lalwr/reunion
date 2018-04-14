@@ -1,8 +1,6 @@
 package com.reunion.dao;
 
 import com.reunion.domain.BoardReply;
-import com.reunion.domain.Member;
-import com.reunion.domain.MemberSchool;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -54,14 +52,9 @@ public class BoardReplyDao {
     public int update(BoardReply boardReply){
         SqlParameterSource params = new BeanPropertySqlParameterSource(boardReply);
         return jdbc.update("update board_reply set content = :content, " +
-                "edit_date = now() where board_no = :boardNo and no = :no and member_id = :memberId", params);
+                "edit_date = now() where  no = :no", params);
     }
 
-//    public BoardReply selectReply(int no){
-//        Map<String, ?> params = Collections.singletonMap("no", no);
-//        return jdbc.queryForObject("SELECT no AS no ,content AS content ,member_id AS memberId ,reg_date AS regDate ," +
-//                "edit_date AS editDate FROM board_reply WHERE no = :no and board_no = : boardNo and member_id = :memberId", params, rowMapper);
-//    }
 }
 
 

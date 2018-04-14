@@ -10,7 +10,6 @@
     <input type="hidden" name="_method" value="" id="method">
     <table class="table">
         <tr>
-            <%--<td>사용자: <input type="text" id="memberId" name="memberId"></td>--%>
             <td><textarea name="content" cols="40" rows="8"></textarea></td>
             <td><input type="submit" value="등록"></td>
         </tr>
@@ -28,9 +27,11 @@
                 <td>${list.content}</td>
                 <td>${list.regDate}</td>
                 <%--<c:if test="${memberId eq 'oh'}">--%>
-                <td><input type="button" id="button1" onclick="button1_click();" value="수정"/></td>
+                <%--<td><input type="button" onclick="location.href='update_reply/${list.no}'" value="수정"/></td>--%>
+                <td><button type="button" onclick="location.href='update/form/${list.no}'">수정</button> </td>
                 <input type=hidden name="no" value="${list.no}">
-                <td><input type="button" value="삭제" onclick="location.href='delete_reply/${list.no}'"></td>
+                <input type="hidden" name="content" value="${list.content}">
+                <td><input type="button" value="삭제" onclick="location.href='delete_reply/${list.no}' "></td>
                 <%--<td><a href="delete.jsp?no=${list.no}">삭제</a></td>--%>
 
                 <%--</c:if>--%>

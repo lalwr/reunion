@@ -2,7 +2,6 @@ package com.reunion.service;
 
 import com.reunion.dao.BoardReplyDao;
 import com.reunion.domain.BoardReply;
-import com.reunion.domain.Reunion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,5 +27,10 @@ public class BoardReplyService {
     @Transactional
     public int delete(int no) throws Exception {
         return boardReplyDao.delete(no);
+    }
+
+    @Transactional
+    public int update(BoardReply reply) throws Exception{
+        return boardReplyDao.update(reply);
     }
 }
