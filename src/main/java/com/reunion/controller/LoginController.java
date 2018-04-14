@@ -6,6 +6,7 @@ import com.reunion.domain.School;
 import com.reunion.service.MemberSchoolService;
 import com.reunion.service.MemberService;
 import com.reunion.service.SchoolService;
+import com.reunion.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,6 +28,8 @@ public class LoginController {
     MemberService memberService;
     @Autowired
     MemberSchoolService memberSchoolService;
+    @Autowired
+    SignUpService signUpService;
 
     @GetMapping(value = "/login")
     public String login(HttpServletRequest request){
@@ -55,25 +58,13 @@ public class LoginController {
 
     }
 
-//    @GetMapping(value = "/update")
-//    public String update(HttpServletRequest request, ModelMap modelMap){
-//        HttpSession session = request.getSession();
-//        if(session.isNew()){
-//            return "redirect:/member/login";
-//        }
-//        Member member = memberService.getMember(session.getAttribute("loginId"));
-//        modelMap.addAttribute("member", member);
-//        return "/memberManagin/update";
-//    }
-
     @ResponseBody
     @GetMapping(value = "/idCheck")
     public String idCheck(@RequestParam(name = "id") String id){
-        if(memberService.getMember(id) == null){
+        if(memberService.getMember(id) == null)
             return "true"; //true
-        }else{
+        else
             return "false"; // false
-        }
     }
 
     @GetMapping(value = "/join")
@@ -86,19 +77,8 @@ public class LoginController {
     @PostMapping(value = "/signUp")
     public String signUp(@RequestParam(name = "id") String id, @RequestParam(name = "name") String name,
                          @RequestParam(name = "password") String password, @RequestParam(name = "school") String school){
-        Date date = new Date();
-        Member member = new Member();
-        member.setId(id);
-        member.setPassword(password);
-        member.setName(name);
-        member.setRegDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
-        member.setEditDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
-        int memberNo = memberService.addMember(member);
-        int schoolNo = schoolService.getSchool(school).getNo();
-        MemberSchool ms = new MemberSchool();
-        ms.setMemberNo(memberNo);
-        ms.setSchoolNo(schoolNo);
-        memberSchoolService.addMemberSchool(ms);
+
+        signUpService.signUp(id,name,password,school);
 
         return "redirect:/member/login";
     }
