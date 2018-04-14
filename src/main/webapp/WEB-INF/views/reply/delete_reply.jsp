@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>삭제하시겠습니까?</title>
+    <title>섹제확인</title>
 </head>
 <body>
 
