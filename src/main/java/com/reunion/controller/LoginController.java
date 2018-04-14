@@ -90,7 +90,8 @@ public class LoginController {
 
     @GetMapping(value = "/logOut")
     public String logOut(HttpServletRequest request){
-        request.getSession(false).invalidate();
+        HttpSession session = request.getSession(false);
+        session.removeAttribute("loginId");
         return "redirect:/member/login";
     }
 }
