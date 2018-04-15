@@ -31,7 +31,7 @@ public class BoardReplyDao {
 
     public List<BoardReply> list() throws Exception{
         return jdbc.query("SELECT no AS no ,content AS content ,member_id AS memberId ,board_no AS boardNo, " +
-                "reg_date AS regDate ,edit_date AS editDate FROM board_reply order by no desc", Collections.emptyMap(), rowMapper);
+                "reg_date AS regDate ,edit_date AS editDate FROM board_reply where board_no=:boardNo order by no desc", Collections.emptyMap(), rowMapper);
     }
 
     public int insert(BoardReply reply){

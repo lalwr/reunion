@@ -33,9 +33,10 @@ public class BoardReplyController {
     @Autowired
     BoardReplyService boardReplyService;
 
-    @GetMapping(value = "/list_reply")
-    public String list(BoardReply reply, ModelMap modelMap) throws Exception {
+    @GetMapping(value = "/list_reply/{boardNo}")
+    public String list(@PathVariable(value="boardNo")int boardNo,BoardReply reply, ModelMap modelMap) throws Exception {
         List<BoardReply> replyList = boardReplyService.list(reply);
+        reply.setBoardNo(boardNo);
         modelMap.addAttribute("replyList", replyList);
         return "reply/replyView";
     }
@@ -58,10 +59,12 @@ public class BoardReplyController {
     @PostMapping("/update_reply/{no}")
     public String update(@PathVariable(value="no")int no,@RequestParam(name = "updatecontent") String content,BoardReply reply,ModelMap modelMap) throws Exception{
         List<BoardReply> replyList = boardReplyService.list(reply);
-        modelMap.addAttribute("replyList", replyList);
         reply.setContent(content);
         reply.setNo(no);
         boardReplyService.update(reply);
+
+        modelMap.addAttribute("replyList", replyList);
+
         return "redirect:/boardreply/list_reply";
     }
 
