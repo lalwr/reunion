@@ -27,13 +27,10 @@
                 <td>${list.content}</td>
                 <td>${list.regDate}</td>
                 <%--<c:if test="${memberId eq 'oh'}">--%>
-                <%--<td><input type="button" onclick="location.href='update_reply/${list.no}'" value="수정"/></td>--%>
                 <td><button type="button" onclick="location.href='update/form/${list.no}'">수정</button> </td>
                 <input type=hidden name="no" value="${list.no}">
                 <input type="hidden" name="content" value="${list.content}">
                 <td><input type="button" value="삭제" onclick="location.href='delete_reply/${list.no}' "></td>
-                <%--<td><a href="delete.jsp?no=${list.no}">삭제</a></td>--%>
-
                 <%--</c:if>--%>
 
             </tr>
