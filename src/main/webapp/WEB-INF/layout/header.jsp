@@ -14,3 +14,5 @@
 <script type="text/javascript" src="${contextPath}/resources/js/jquery-3.3.1.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script type="text/javascript" src="${contextPath}/resources/components/bootstrap/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="${contextPath}/resources/js/reunionFrame.js"></script>

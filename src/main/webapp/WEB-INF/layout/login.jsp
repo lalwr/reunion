@@ -6,10 +6,6 @@
     <tiles:insertAttribute name="header" />
 </head>
 <body>
-    <tiles:insertAttribute name="navbar" />
-<div id="wrapper">
-    <tiles:insertAttribute name="content" />
-    <tiles:insertAttribute name="footer" />
-</div>
+<tiles:insertAttribute name="content" />
 </body>
 </html>

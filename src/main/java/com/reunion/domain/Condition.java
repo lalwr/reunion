@@ -14,6 +14,8 @@ public class Condition implements Serializable {
     private int pageVal = 0;
     private int pageSize = 3;
     private int totCount;
+    private String searchType;
+    private String searchText;
 
     private String linkFunc;
 

@@ -30,9 +30,10 @@ public class LoginController {
 
     @GetMapping(value = "/login")
     public String login(HttpServletRequest request){
-        HttpSession httpSession = request.getSession();
-        if(httpSession.isNew()){
-            return "/memberManaging/login";
+        HttpSession session = request.getSession();
+        String userId = (String)session.getAttribute("userId");
+        if(userId == null){
+            return "login";
         }else{
             return "redirect:/reunion/list";
         }

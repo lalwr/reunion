@@ -1,18 +1,22 @@
 package com.reunion.dao;
 
 import com.reunion.config.DbConfig;
+import com.reunion.domain.Condition;
 import com.reunion.domain.Member;
+import com.reunion.domain.Reunion;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DbConfig.class)
@@ -33,89 +37,96 @@ public class ReunionDaoTest {
         Assert.assertTrue(true);
     }
 
-    /*@Test
-    public void testSelectAll() throws Exception{
-        List<Member> reunions = reunionDao.selectAll();
-        Assert.assertEquals(2, reunions.size());
-        for(Member reunion: reunions){
-            System.out.println(reunion);
-        }
+    @Test
+    public void testListReunion() throws Exception{
+        //given
+        Condition condition1 = new Condition();
+        condition1.setPageSize(999);
+        condition1.setSearchType("subject");
+        condition1.setSearchText("강남");
+
+        Condition condition2 = new Condition();
+        condition2.setPageSize(999);
+        condition2.setSearchType("content");
+        condition2.setSearchText("강남");
+
+        //when
+        List<Reunion> reunions1 = reunionDao.listReunion(condition1);
+        int cnt1 = reunionDao.listCnt(condition1);
+
+        List<Reunion> reunions2 = reunionDao.listReunion(condition2);
+        int cnt2 = reunionDao.listCnt(condition2);
+
+
+        //then
+        Assert.assertEquals(cnt1, reunions1.size());
+        Assert.assertEquals(cnt2, reunions2.size());
+
     }
 
     @Test
-    public void testInsertRole() throws Exception{
-        Member member = new Member();
-        member.setId("kim");
-        member.setName("김형진");
-        member.setPassword("123");
-        member.setRegDate("2018-04-12 10:05:30");
-        member.setEditDate("2018-04-12 10:05:30");
-        int memberNo = reunionDao.insertReunion(member);
-        System.out.println(memberNo);
+    public void testWriteReunion() throws Exception{
+        Reunion reunion = new Reunion();
+        reunion.setNo("13");
+        reunion.setSubject("제목 테스트");
+        reunion.setContent("내용 테스트중");
+        reunion.setRegId("kim");
+        reunion.setRegDate("2018-04-12 10:05:30");
+        reunion.setEditDate("2018-04-12 10:05:30");
+        reunion.setSchoolNo("1");
+        reunion.setCategoryNo("1");
+
+        int chk = reunionDao.writeReunion(reunion);
+
+        Assert.assertEquals(1, chk);
     }
 
     @Test
-    public void testUpdateRole() throws Exception{
+    public void testUpdateReunion() throws Exception{
         // given
-        Member member = new Member();
-        member.setId("test");
-        member.setName("홍길동");
-        member.setPassword("123");
-        member.setRegDate("2018-04-12 10:05:30");
-        member.setEditDate("2018-04-12 10:05:30");
-        int memberNo = reunionDao.insertReunion(member);
-        Member member1 = reunionDao.selectReunion(memberNo);
+        Reunion detailReunion1 = reunionDao.detailReunion("1");
 
         // when
-        member1.setName("testUpdate");
-        reunionDao.updateReunion(member1);
+        detailReunion1.setContent("내용 수정");
+        reunionDao.updateReunion(detailReunion1);
 
         // then
-        Member member2 = reunionDao.selectReunion(memberNo);
-        Assert.assertEquals("testUpdate", member2.getName());
-        System.out.println(memberNo);
+        Reunion detailReunion2 = reunionDao.detailReunion("1");
+        Assert.assertEquals("내용 수정", detailReunion2.getContent());
 
     }
 
     @Test
-    public void testSelectOne() throws Exception{
-        // given
-        Member member = new Member();
-        member.setId("test123");
-        member.setName("홍길동");
-        member.setPassword("123");
-        member.setRegDate("2018-04-12 10:05:30");
-        member.setEditDate("2018-04-12 10:05:30");
-        int memberNo = reunionDao.insertReunion(member);
+    public void testdDetailReunion() throws Exception{
 
         // when
-        Member member1 = reunionDao.selectReunion(memberNo);
+        Reunion detailReunion1 = reunionDao.detailReunion("1");
+        Reunion detailReunion2 = reunionDao.detailReunion("12372137128372189371298");
 
         // then
-        Assert.assertEquals(member.getId(), member1.getId());
-        Assert.assertEquals(member.getName(), member1.getName());
+        Assert.assertEquals("강남에서 번개", detailReunion1.getSubject());
+        Assert.assertEquals(null, detailReunion2);
 
     }
 
     @Test
-    public void deleteRole() throws Exception{
+    public void testdDeleteReunion() throws Exception{
+        //given
+        Reunion reunion = new Reunion();
+        reunion.setNo("2");
 
-        // given
-        Member member = new Member();
-        member.setId("test4747");
-        member.setName("홍길순");
-        member.setPassword("123");
-        member.setRegDate("2018-04-12 10:05:30");
-        member.setEditDate("2018-04-12 10:05:30");
-        int memberNo = reunionDao.insertReunion(member);
-        List<Member> members = reunionDao.selectAll();
-        Assert.assertEquals(3, members.size());
+        Condition condition = new Condition();
+        condition.setPageSize(999);
 
         // when
-        reunionDao.deleteReunion(memberNo);
+        List<Reunion> list = reunionDao.listReunion(condition);
+        int cnt1 = reunionDao.listCnt(condition);
+        reunionDao.deleteReunion(reunion);
+
+        int cnt2 = reunionDao.listCnt(condition);
 
         // then
-        List<Member> member2 = reunionDao.selectAll();
-        Assert.assertEquals(member2.size(), members.size() - 1);
-    }*/
+        Assert.assertEquals(cnt1, list.size());
+        Assert.assertEquals(cnt2, list.size()-1);
+    }
 }
