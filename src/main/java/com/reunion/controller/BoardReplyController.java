@@ -43,7 +43,7 @@ public class BoardReplyController {
     public String list(BoardReply reply, ModelMap modelMap) throws Exception {
         List<BoardReply> replyList = boardReplyService.list(reply);
         modelMap.addAttribute("replyList", replyList);
-        return "reply/replyView";
+        return "ajax/reply/replyView";
     }
 
     @PostMapping(value = "/write_reply")

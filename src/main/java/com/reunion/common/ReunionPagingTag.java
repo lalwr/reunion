@@ -56,10 +56,17 @@ public class ReunionPagingTag extends TagSupport{
         html.append("<div class='col-sm-8'>");
         html.append("<div class='dataTables_paginate paging_simple_numbers'>");
         html.append("<ul class='pagination'>");
+        html.append("<li class='page-item ");
+        if (this.pagingInfo.getPage() == 1) {
+            html.append("disabled");
+        }
+        html.append("'><a class='page-link' href='javascript:;' onclick='javascript:" + this.linkFunction + "(1);'> <<</a></li>");
+
         html.append("<li class='paginate_button previous ");
         if (this.pageIndex == 0) {
             html.append("disabled");
         }
+
         html.append("' aria-controls='dataTables-example' tabindex='0'><a href='javascript:;' onclick='javascript:" + navFunction(this.PREVIOUS, -1) + ";'><</a></li>");
         for (int i = this.pageIndex * 5 + 1 ; i < this.lastPage + 1 ; i++) {
             html.append("<li class='paginate_button ");
@@ -73,6 +80,13 @@ public class ReunionPagingTag extends TagSupport{
             html.append("disabled");
         }
         html.append("' aria-controls='dataTables-example' tabindex='0'><a href='javascript:;' onclick='javascript:" + navFunction(this.NEXT, -1) + ";'>></a></li>");
+
+        html.append("<li class='page-item ");
+        if (this.pagingInfo.getPage() == maxPage) {
+            html.append("disabled");
+        }
+        html.append("'><a class='page-link' href='javascript:;' onclick='javascript:" + this.linkFunction + "(" + maxPage + ");'>>></a></li>");
+
         html.append("</ul>");
         html.append("</div>");
         html.append("</div>");

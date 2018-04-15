@@ -31,7 +31,6 @@ public class SchoolDao {
         return jdbc.query("SELECT no, name, category, reg_date FROM school order by no", Collections.emptyMap(), rowMapper);
     }
 
-    //test 다시.
     public int insertSchool(School school){
         SqlParameterSource params = new BeanPropertySqlParameterSource(school);
         // 자동으로 id를 생성할 경우에는 아래와 같이 생성된 pk를 반환할 수 있다.

@@ -31,7 +31,6 @@ public class MemberSchoolDao {
         return jdbc.query("SELECT member_no, school_no FROM member_school order by member_no", Collections.emptyMap(), rowMapper);
     }
 
-    //test 다시.
     public int insertMemberSchool(MemberSchool ms){
         SqlParameterSource params = new BeanPropertySqlParameterSource(ms);
         // 자동으로 id를 생성할 경우에는 아래와 같이 생성된 pk를 반환할 수 있다.
