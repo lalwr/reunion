@@ -14,8 +14,8 @@ public class BoardReplyService {
     BoardReplyDao boardReplyDao;
 
     @Transactional(readOnly = true)
-    public List<BoardReply> list(BoardReply reply) throws Exception{
-        return boardReplyDao.list();
+    public List<BoardReply> list(int boardno) throws Exception{
+        return boardReplyDao.list(boardno);
     }
 
     @Transactional

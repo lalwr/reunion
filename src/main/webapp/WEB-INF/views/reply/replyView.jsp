@@ -6,7 +6,7 @@
     <title>댓글</title>
 </head>
 <body>
-<form id="form" action="/boardreply/write_reply" method="post" name="textform">
+<form id="form" action="/boardreply/write_reply/${board_n}" method="post" name="textform">
     <input type="hidden" name="_method" value="" id="method">
         <textarea name="content" cols="40" rows="8"></textarea>
         <input type="submit" value="등록">
