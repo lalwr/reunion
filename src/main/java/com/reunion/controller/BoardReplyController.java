@@ -34,15 +34,6 @@ public class BoardReplyController {
     @Autowired
     BoardReplyService boardReplyService;
 
-//    @GetMapping(value = "/list_reply/{boardNo}")
-//    public String list(@PathVariable(value="boardNo")int no,BoardReply reply, ModelMap modelMap) throws Exception {
-//        reply.setBoardNo(no);
-//        List<BoardReply> replyList = boardReplyService.list(reply);
-//
-//        modelMap.addAttribute("replyList", replyList);
-//        return "reply/replyView";
-//    }
-
     @GetMapping(value = "/list_reply")
     public String list(BoardReply reply, ModelMap modelMap) throws Exception {
         List<BoardReply> replyList = boardReplyService.list(reply);
@@ -50,6 +41,15 @@ public class BoardReplyController {
         modelMap.addAttribute("replyList", replyList);
         return "reply/replyView";
     }
+
+//    @GetMapping(value = "/list_reply/{boardNo}")
+//    public String list(@PathVariable(value="boardNo")int no,BoardReply reply, ModelMap modelMap) throws Exception {
+//        reply.setBoardNo(no);
+//        List<BoardReply> replyList = boardReplyService.list();
+//
+//        modelMap.addAttribute("replyList", replyList);
+//        return "reply/replyView";
+//    }
 
     @PostMapping(value = "/write_reply")
     public String write(BoardReply reply) throws Exception {
@@ -61,7 +61,7 @@ public class BoardReplyController {
     }
 
     @GetMapping(value = "/delete_reply/{no}")
-    public String delete(@PathVariable(value="no")int no, BoardReply reply,ModelMap modelMap) throws Exception {
+    public String delete(@PathVariable(value="no")int no, BoardReply reply) throws Exception {
         boardReplyService.delete(no);
         return "reply/delete_reply";
     }

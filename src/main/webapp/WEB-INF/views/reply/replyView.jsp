@@ -24,12 +24,12 @@
                 <td>${list.memberId}</td>
                 <td>${list.content}</td>
                 <td>${list.editDate}</td>
-                <%--<c:if test="${memberId eq 'oh'}">--%>
-                <td><button type="button" onclick="location.href='update/form/${list.no}'">수정</button> </td>
-                <input type=hidden name="no" value="${list.no}">
-                <td><input type="button" value="삭제" onclick="location.href='delete_reply/${list.no}' "></td>
-                <%--</c:if>--%>
+                <c:if test="${list.memberId eq 'oh'}">
+                    <td><button type="button" onclick="location.href='update/form/${list.no}'">수정</button> </td>
+                    <%--<input type=hidden name="no" value="${list.no}">--%>
+                    <td><input type="button" value="삭제" onclick="location.href='delete_reply/${list.no}' "></td>
 
+                </c:if>
             </tr>
         </c:forEach>
         </tbody>
