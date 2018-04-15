@@ -8,11 +8,9 @@
 <body>
 <form id="form" action="/boardreply/write_reply" method="post" name="textform">
     <input type="hidden" name="_method" value="" id="method">
+        <textarea name="content" cols="40" rows="8"></textarea>
+        <input type="submit" value="등록">
     <table class="table">
-        <tr>
-            <td><textarea name="content" cols="40" rows="8"></textarea></td>
-            <td><input type="submit" value="등록"></td>
-        </tr>
         <tbody>
         <tr>
             <td>글번호</td>
@@ -25,11 +23,10 @@
                 <td>${list.no}</td>
                 <td>${list.memberId}</td>
                 <td>${list.content}</td>
-                <td>${list.regDate}</td>
+                <td>${list.editDate}</td>
                 <%--<c:if test="${memberId eq 'oh'}">--%>
                 <td><button type="button" onclick="location.href='update/form/${list.no}'">수정</button> </td>
                 <input type=hidden name="no" value="${list.no}">
-                <input type="hidden" name="content" value="${list.content}">
                 <td><input type="button" value="삭제" onclick="location.href='delete_reply/${list.no}' "></td>
                 <%--</c:if>--%>
 

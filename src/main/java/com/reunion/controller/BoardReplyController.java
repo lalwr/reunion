@@ -4,6 +4,7 @@ import com.reunion.domain.BoardReply;
 import com.reunion.service.BoardReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,16 +34,25 @@ public class BoardReplyController {
     @Autowired
     BoardReplyService boardReplyService;
 
-    @GetMapping(value = "/list_reply/{boardNo}")
-    public String list(@PathVariable(value="boardNo")int boardNo,BoardReply reply, ModelMap modelMap) throws Exception {
+//    @GetMapping(value = "/list_reply/{boardNo}")
+//    public String list(@PathVariable(value="boardNo")int no,BoardReply reply, ModelMap modelMap) throws Exception {
+//        reply.setBoardNo(no);
+//        List<BoardReply> replyList = boardReplyService.list(reply);
+//
+//        modelMap.addAttribute("replyList", replyList);
+//        return "reply/replyView";
+//    }
+
+    @GetMapping(value = "/list_reply")
+    public String list(BoardReply reply, ModelMap modelMap) throws Exception {
         List<BoardReply> replyList = boardReplyService.list(reply);
-        reply.setBoardNo(boardNo);
+
         modelMap.addAttribute("replyList", replyList);
         return "reply/replyView";
     }
 
     @PostMapping(value = "/write_reply")
-    public String write(BoardReply reply, ModelMap modelMap) throws Exception {
+    public String write(BoardReply reply) throws Exception {
         reply.setMemberId("oh");
         reply.setBoardNo(1);
         boardReplyService.insert(reply);
@@ -69,7 +79,11 @@ public class BoardReplyController {
     }
 
     @GetMapping("/update/form/{no}")
-    public String updateform(@PathVariable(value="no")int no) throws Exception{
+    public String updateform(@PathVariable(value="no")int no,BoardReply reply,Model model) throws Exception{
+        reply = boardReplyService.selectContent(no);
+        String content = reply.getContent();
+        model.addAttribute("content",content);
+        System.out.println("내용:"+content);
 
         return "reply/update_reply";
     }

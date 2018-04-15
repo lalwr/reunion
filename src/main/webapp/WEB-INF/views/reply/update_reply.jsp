@@ -1,4 +1,4 @@
-
+<%@ page import="org.aspectj.weaver.ast.Var" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -7,7 +7,11 @@
 <body>
 
 <form action="/boardreply/update_reply/${no}" method="post">
-    내용 : <textarea name="updatecontent" cols="40" rows="8"></textarea><br>
+    <%
+        String s = (String)request.getAttribute("content") ;
+    %>
+
+    내용 : <textarea name="updatecontent" cols="40" rows="8"><%=s%></textarea><br>
     <input type="submit">
 
 </form>

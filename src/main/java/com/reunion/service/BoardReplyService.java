@@ -33,4 +33,9 @@ public class BoardReplyService {
     public int update(BoardReply reply) throws Exception{
         return boardReplyDao.update(reply);
     }
+
+    @Transactional
+    public BoardReply selectContent(int no) throws Exception{
+        return boardReplyDao.selectOne(no);
+    }
 }
