@@ -1,41 +1,18 @@
 package com.reunion.service;
 
-import com.reunion.dao.BoardReplyDao;
 import com.reunion.domain.BoardReply;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-public class BoardReplyService {
-    @Autowired
-    BoardReplyDao boardReplyDao;
+public interface BoardReplyService {
+    public List<BoardReply> list(int boardno) throws Exception;
 
-    @Transactional(readOnly = true)
-    public List<BoardReply> list(int boardno) throws Exception{
-        return boardReplyDao.list(boardno);
-    }
+    public int insert(BoardReply reply)  throws Exception;
 
-    @Transactional
-    public int insert(BoardReply reply)  throws Exception{
-        int roleId = boardReplyDao.insert(reply);
-        return roleId;
-    }
+    public int delete(BoardReply reply) throws Exception;
 
-    @Transactional
-    public int delete(int no) throws Exception {
-        return boardReplyDao.delete(no);
-    }
+    public int update(BoardReply reply) throws Exception;
 
-    @Transactional
-    public int update(BoardReply reply) throws Exception{
-        return boardReplyDao.update(reply);
-    }
-
-    @Transactional
-    public BoardReply selectContent(int no) throws Exception{
-        return boardReplyDao.selectOne(no);
-    }
+    public BoardReply selectContent(int no) throws Exception;
 }
