@@ -6,6 +6,7 @@ import com.reunion.domain.School;
 import com.reunion.service.MemberSchoolService;
 import com.reunion.service.MemberService;
 import com.reunion.service.SchoolService;
+import com.reunion.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,28 +28,31 @@ public class LoginController {
     MemberService memberService;
     @Autowired
     MemberSchoolService memberSchoolService;
+    @Autowired
+    SignUpService signUpService;
 
     @GetMapping(value = "/login")
     public String login(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        String userId = (String)session.getAttribute("userId");
-        if(userId == null){
-            return "login";
+        HttpSession session = request.getSession(false);
+        if(session != null){
+            if(session.getAttribute("loginId")==null){
+                return "/memberManaging/login";
+            }else{
+                return "redirect:/reunion/list";
+            }
         }else{
-            return "redirect:/reunion/list";
+            return "/memberManaging/login";
         }
 
     }
     @ResponseBody
     @PostMapping(value = "/loginCheck")
-    public String loginCheck(HttpServletRequest request, @RequestParam(name = "id") String id, @RequestParam(name = "password") String password, ModelMap modelMap){
+    public String loginCheck(HttpServletRequest request, @RequestParam(name = "id") String id, @RequestParam(name = "password") String password){
         Member member = memberService.getMember(id);
         if(member != null){
-            if(member.getPassword().equals(password)){
+            if(member.getPassword().equals(password)){ // 로그인 성공
                 HttpSession session = request.getSession();
-                String loginId = member.getId(); // 로그인 성공
-                session.setAttribute("loginId", loginId);
-                modelMap.addAttribute("loginId", loginId);
+                session.setAttribute("loginId", member.getId());
                 return "success";
             }else{ // 비밀번호 불일치
                 return "incorrectPw";
@@ -61,14 +65,11 @@ public class LoginController {
 
     @ResponseBody
     @GetMapping(value = "/idCheck")
-    public String idCheck(@RequestParam(name = "id") String id,ModelMap modelMap){
-        boolean idCheck = (memberService.getMember(id) == null);
-        modelMap.addAttribute("idCheck",idCheck);
-        if(idCheck){
+    public String idCheck(@RequestParam(name = "id") String id){
+        if(memberService.getMember(id) == null)
             return "true"; //true
-        }else{
+        else
             return "false"; // false
-        }
     }
 
     @GetMapping(value = "/join")
@@ -81,21 +82,16 @@ public class LoginController {
     @PostMapping(value = "/signUp")
     public String signUp(@RequestParam(name = "id") String id, @RequestParam(name = "name") String name,
                          @RequestParam(name = "password") String password, @RequestParam(name = "school") String school){
-        Date date = new Date();
-        Member member = new Member();
-        member.setId(id);
-        member.setPassword(password);
-        member.setName(name);
-        member.setRegDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
-        member.setEditDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
-        int memberNo = memberService.addMember(member);
-        int schoolNo = schoolService.getSchool(school).getNo();
-        MemberSchool ms = new MemberSchool();
-        ms.setMemberNo(memberNo);
-        ms.setSchoolNo(schoolNo);
-        memberSchoolService.addMemberSchool(ms);
 
+        signUpService.signUp(id,name,password,school);
 
+        return "redirect:/member/login";
+    }
+
+    @GetMapping(value = "/logOut")
+    public String logOut(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        session.removeAttribute("loginId");
         return "redirect:/member/login";
     }
 }
