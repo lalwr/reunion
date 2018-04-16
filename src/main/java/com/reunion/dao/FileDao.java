@@ -57,7 +57,7 @@ public class FileDao {
         }
     }
 
-    public FileVO fileDownload(String fileNo) {
+    public FileVO fileDetail(String fileNo) {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT no as no, name AS name, temp_name AS tempName, file_size AS fileSize, path AS path, format AS format ");
         sql.append(", reg_date AS reg_date, board_no AS boardNo ");
@@ -76,5 +76,10 @@ public class FileDao {
     public int fileDelete(String fileNo) {
         Map<String, ?> params = Collections.singletonMap("fileNo", fileNo);
         return jdbc.update("DELETE FROM file WHERE no = :fileNo", params);
+    }
+
+    public int fileDeleteAll(String reunionNo) {
+        Map<String, ?> params = Collections.singletonMap("reunionNo", reunionNo);
+        return jdbc.update("DELETE FROM file WHERE board_no = :reunionNo", params);
     }
 }

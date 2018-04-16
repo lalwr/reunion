@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /*
@@ -45,22 +46,25 @@ public class BoardReplyController {
 
         modelMap.addAttribute("replyList", replyList);
         model.addAttribute("board_n",no);
-        return "reply/replyView";
+        return "ajax/reply/replyView";
     }
 
+    @ResponseBody
     @PostMapping(value = "/write_reply/{boardNo}")
-    public String write(BoardReply reply,@PathVariable(value="boardNo")int no) throws Exception {
-        reply.setMemberId("oh");
+    public String write(BoardReply reply, @PathVariable(value="boardNo")int no, HttpSession session) throws Exception {
+        String loginId = (String)session.getAttribute("loginId");
+        reply.setMemberId(loginId);
         reply.setBoardNo(no);
         boardReplyService.insert(reply);
 
-        return "redirect:/boardreply/list_reply/3";
+        return "true";
     }
 
-    @GetMapping(value = "/delete_reply/{no}")
+    @ResponseBody
+    @PostMapping(value = "/delete_reply/{no}")
     public String delete(@PathVariable(value="no")int no, BoardReply reply) throws Exception {
-        boardReplyService.delete(no);
-//        String strNo = Integer.toString(no);
+        reply.setNo(no);
+        boardReplyService.delete(reply);
         return "reply/delete_reply";
     }
 
@@ -82,7 +86,6 @@ public class BoardReplyController {
         reply = boardReplyService.selectContent(no);
         String content = reply.getContent();
         model.addAttribute("content",content);
-        System.out.println("내용:"+content);
 
         return "reply/update_reply";
     }

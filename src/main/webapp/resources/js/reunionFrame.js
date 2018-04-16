@@ -7,7 +7,7 @@ function reunionHome() {
 function logOut(){
     window.location.href = "/member/logOut";
 }
-
 function signUp(){
     window.location.href = "/member/join";
 }
+
