@@ -29,17 +29,12 @@ public class LoginController {
 
     @GetMapping(value = "/login")
     public String login(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if(session != null){
-            if(session.getAttribute("loginId")==null){
-                return "/memberManaging/login";
-            }else{
-                return "redirect:/reunion/list";
-            }
-        }else{
+        HttpSession session = request.getSession();
+        if(session.getAttribute("loginId")==null){
             return "/memberManaging/login";
+        }else{
+            return "redirect:/reunion/list";
         }
-
     }
     @ResponseBody
     @PostMapping(value = "/loginCheck")
