@@ -7,7 +7,17 @@ $(document).ready(function()
 
 });
 function updateReunion() {
-    window.location.href = "${contextPath}/reunion/detail/" + + document.getElementById('no').value;;
+    var page = document.getElementById('page').value;
+    var serarchType = document.getElementById('searchType').value;
+    var serarchText = document.getElementById('searchText').value;
+    window.location.href = "${contextPath}/reunion/detail/" + document.getElementById('no').value
+        + "?page=" + page + "&searchType=" + serarchType + "&searchText=" + serarchText;
+}
+function listReunion() {
+    var page = document.getElementById('page').value;
+    var serarchType = document.getElementById('searchType').value;
+    var serarchText = document.getElementById('searchText').value;
+    window.location.href = "${contextPath}/reunion/list?page=" + page + "&searchType=" + serarchType + "&searchText=" + serarchText;
 }
 </script>
 <!DOCTYPE html>
@@ -21,6 +31,9 @@ function updateReunion() {
         <h3 class="page-header">상세 화면</h3>
     </div>
 </div>
+<input type="hidden" id="page" value="${condition.page}" />
+<input type="hidden" id="searchType" value="${condition.searchType}" />
+<input type="hidden" id="searchText" value="${condition.searchText}" />
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-primary">
@@ -58,7 +71,10 @@ function updateReunion() {
     <div class="col-lg-12">
         <div class="panel panel-info">
             <div class="panel-body panel-view">
+                <c:if test="${sessionScope.loginId == result.regId}">
                 <button type="button" class="btn btn-default" id="update" onclick="updateReunion()">수정</button>
+                </c:if>
+                <button type="button" class="btn btn-default" id="list" onclick="listReunion()">목록</button>
             </div>
         </div>
     </div>

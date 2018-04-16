@@ -4,7 +4,7 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-
+    loadReply();
 });
 function saveReunion() {
     document.getElementById("form").action = "${contextPath}/reunion/update";
@@ -15,6 +15,26 @@ function deleteReunion() {
     document.getElementById("form").action = "${contextPath}/reunion/delete";
     document.getElementById("method").value = "delete";
     document.getElementById("form").submit();
+}
+function listReunion() {
+    var page = document.getElementById('page').value;
+    var serarchType = document.getElementById('searchType').value;
+    var serarchText = document.getElementById('searchText').value;
+    window.location.href = "${contextPath}/reunion/list?page=" + page + "&searchType=" + serarchType + "&searchText=" + serarchText;
+}
+function loadReply() {
+    $.ajax({
+        type: "GET",
+        url: '/list_reply',
+        data : { no : document.getElementById('no').value },
+        success: function(data){
+            $("#reply").html(data);
+        },
+        error: function(err) {
+
+        }
+    });
+
 }
 </script>
 <!DOCTYPE html>
@@ -32,6 +52,9 @@ function deleteReunion() {
 <input type="hidden" name="_method" value="" id="method">
 <input type="hidden" name="schoolNo" value="${result.schoolNo}">
 <input type="hidden" name="categoryNo" value="${result.categoryNo}">
+<input type="hidden" id="page" value="${condition.page}" />
+<input type="hidden" id="searchType" value="${condition.searchType}" />
+<input type="hidden" id="searchText" value="${condition.searchText}" />
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-primary">
@@ -70,10 +93,14 @@ function deleteReunion() {
     <div class="col-lg-12">
         <div class="panel panel-info">
             <div class="panel-body panel-view">
+                <c:if test="${sessionScope.loginId == result.regId}">
                 <button type="button" class="btn btn-default" id="save" onclick="saveReunion()">저장</button>
                 <button type="button" class="btn btn-default" id="delete" onclick="deleteReunion()">삭제</button>
+                </c:if>
+                <button type="button" class="btn btn-default" id="list" onclick="listReunion()">목록</button>
             </div>
         </div>
     </div>
 </div>
+<div id="reply"></div>
 

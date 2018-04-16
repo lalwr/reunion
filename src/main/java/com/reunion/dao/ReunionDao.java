@@ -39,15 +39,31 @@ public class ReunionDao {
     public List<Reunion> listReunion(Condition condition) throws Exception{
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT no AS no ,subject AS subject ,content AS content ,reg_id AS regId ,DATE_FORMAT(reg_Date,'%Y년%m월%d일 %H시%i분%S초') AS regDate,");
-        sql.append("DATE_FORMAT(edit_date,'%Y년%m월%d일 %H시%i분%S초') AS editDate ,school_no AS schoolNo ,category_no AS categoryNo FROM board order by no desc LIMIT :pageVal , :pageSize");
-
+        sql.append("DATE_FORMAT(edit_date,'%Y년%m월%d일 %H시%i분%S초') AS editDate ,school_no AS schoolNo ,category_no AS categoryNo FROM board ");
+        if(condition.getSearchType() != null && condition.getSearchType() != ""){
+            if(condition.getSearchType().equals("subject")){
+                sql.append("WHERE subject LIKE '%" + condition.getSearchText() + "%' ");
+            }else if(condition.getSearchType().equals("content")){
+                sql.append("WHERE content LIKE '%" + condition.getSearchText() + "%' ");
+            }
+        }
+        sql.append("order by no desc LIMIT :pageVal , :pageSize");
         SqlParameterSource params = new BeanPropertySqlParameterSource(condition);
         return jdbc.query( sql.toString() , params, rowMapper);
     }
 
     public int listCnt(Condition condition) throws Exception{
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT COUNT(*) FROM board ");
+        if(condition.getSearchType() != null && condition.getSearchType() != ""){
+            if(condition.getSearchType().equals("subject")){
+                sql.append("WHERE subject LIKE '%" + condition.getSearchText() + "%' ");
+            }else if(condition.getSearchType().equals("content")){
+                sql.append("WHERE content LIKE '%" + condition.getSearchText() + "%' ");
+            }
+        }
         SqlParameterSource params = new BeanPropertySqlParameterSource(condition);
-        return jdbc.queryForObject("SELECT COUNT(*) FROM board", params, Integer.class);
+        return jdbc.queryForObject(sql.toString(), params, Integer.class);
     }
 
     public Reunion detailReunion(String reunionNo) throws Exception{
