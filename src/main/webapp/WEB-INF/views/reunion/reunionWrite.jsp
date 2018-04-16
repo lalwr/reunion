@@ -18,7 +18,7 @@ $(document).ready(function()
         <h3 class="page-header">상세 화면</h3>
     </div>
 </div>
-<form id="form" name="form" method="post" action="${contextPath}/reunion//write">
+<form id="form" name="form" method="post" action="${contextPath}/reunion//write" enctype="multipart/form-data">
     <input type="hidden" name="schoolNo" value="${reunion.schoolNo}">
     <input type="hidden" name="categoryNo" value="${reunion.categoryNo}">
     <div class="row">
@@ -41,11 +41,15 @@ $(document).ready(function()
                             </div>
                             <div class="form-group">
                                 <label>작성자</label>
-                                <input class="form-control" name="regId" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성자">
+                                <input class="form-control" name="regId" value="${sessionScope.loginId}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성자">
                             </div>
                             <div class="form-group">
-                                <label>작성일</label>
-                                <input class="form-control" name="regDate" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성일">
+                                <label for="file1">파일1</label>
+                                <input type="file" class="form-control-file" id="file1" name="file">
+                            </div>
+                            <div class="form-group">
+                                <label for="file2">파일2</label>
+                                <input type="file" class="form-control-file" id="file2" name="file">
                             </div>
                         </div>
                     </div>

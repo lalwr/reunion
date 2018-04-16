@@ -11,9 +11,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Repository
 public class ReunionDao {
@@ -34,6 +33,7 @@ public class ReunionDao {
         this.insertAction = new SimpleJdbcInsert(dataSource)
                 .withTableName("board")
                 .usingGeneratedKeyColumns("no"); // 자동으로 id가 생성될 경우
+
     }
 
     public List<Reunion> listReunion(Condition condition) throws Exception{
@@ -90,11 +90,9 @@ public class ReunionDao {
         return jdbc.update("delete from board where no = :no", params);
     }
 
-    public int writeReunion(Reunion reunion) {
+    public int writeReunion(Reunion reunion) throws Exception{
         SqlParameterSource params = new BeanPropertySqlParameterSource(reunion);
-        StringBuffer sql = new StringBuffer();
-        sql.append("INSERT INTO board(subject, content, category_no, school_no, reg_id, reg_date, edit_date) ");
-        sql.append("VALUES( :subject, :content, :categoryNo, :schoolNo, :regId, now(), now())");
-        return jdbc.update(sql.toString(), params);
+        // 자동으로 id를 생성할 경우에는 아래와 같이 생성된 pk를 반환할 수 있다.
+        return insertAction.executeAndReturnKey(params).intValue();
     }
 }
