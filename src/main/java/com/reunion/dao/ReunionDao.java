@@ -90,11 +90,9 @@ public class ReunionDao {
         return jdbc.update("delete from board where no = :no", params);
     }
 
-    public int writeReunion(Reunion reunion) {
+    public int writeReunion(Reunion reunion) throws Exception{
         SqlParameterSource params = new BeanPropertySqlParameterSource(reunion);
         // 자동으로 id를 생성할 경우에는 아래와 같이 생성된 pk를 반환할 수 있다.
         return insertAction.executeAndReturnKey(params).intValue();
     }
-
-
 }

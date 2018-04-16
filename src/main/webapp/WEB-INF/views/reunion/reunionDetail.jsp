@@ -36,11 +36,32 @@ function loadReply() {
     });
 
 }
+function fileDown(no) {
+    window.location.href = "/reunion/download/"+no;
+}
+function deleteFile(no) {
+    if (confirm("정말 삭제하시겠습니까??") == true){
+        $.ajax({
+            type: "GET",
+            url: '/reunion/delete/' + no,
+            data : { },
+            success: function(data){
+                alert('삭제 성공하였습니다');
+                window.location.reload();
+            },
+            error: function(err) {
+                alert('삭제 실패하였습니다');
+            }
+        });
+    }else{   //취소
+        return false;
+    }
+}
 </script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <title>게시판 수정</title>
+    <title>게시판 상세</title>
 </head>
 <body>
 <div class="row">
@@ -79,8 +100,17 @@ function loadReply() {
                             </div>
                             <div class="form-group">
                                 <label>작성일</label>
-                                <input class="form-control" name="regDate" value="${result.regDate}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성일">
+                                <input class="form-control" name="regDate" value="${result.regDate}" placeholder="작성일">
                             </div>
+                            <c:forEach var="file" items="${files}" varStatus="status">
+                            <div class="form-group">
+                                <label>파일${status.count}</label><br>
+                                <a href="javascript:;" onclick="fileDown(${file.no}); return false;">${file.name}</a>
+                                <c:if test="${sessionScope.loginId == result.regId}">
+                                <button type="button" class="btn btn-default" id="fileDelete" onclick="deleteFile(${file.no})">삭제</button>
+                                </c:if>
+                            </div>
+                            </c:forEach>
                         </div>
                     </div>
 

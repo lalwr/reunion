@@ -44,11 +44,11 @@ $(document).ready(function()
                                 <input class="form-control" name="regId" value="${sessionScope.loginId}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성자">
                             </div>
                             <div class="form-group">
-                                <label for="file1">File1</label>
+                                <label for="file1">파일1</label>
                                 <input type="file" class="form-control-file" id="file1" name="file">
                             </div>
                             <div class="form-group">
-                                <label for="file2">File2</label>
+                                <label for="file2">파일2</label>
                                 <input type="file" class="form-control-file" id="file2" name="file">
                             </div>
                         </div>

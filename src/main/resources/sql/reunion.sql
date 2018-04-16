@@ -245,7 +245,7 @@ SELECT no AS no
 	   ,temp_name AS tempName
 	   ,file_size AS fileSize
 	   ,path AS path
-	   ,format AS fotmat
+	   ,format AS format
 	   ,reg_date AS regDate
 	   ,board_no AS boardNo
 FROM file

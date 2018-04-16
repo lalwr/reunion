@@ -1,9 +1,9 @@
 package com.reunion.service;
 
 import com.reunion.domain.Condition;
+import com.reunion.domain.FileVO;
 import com.reunion.domain.Reunion;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 public interface ReunionService {
@@ -20,4 +20,9 @@ public interface ReunionService {
 
     public int writeReunion(Reunion reunion, MultipartFile[] files) throws Exception;
 
+    public List<FileVO> fileReunion(String reunionNo) throws Exception;
+
+    public FileVO fileDownload(String fileNo) throws Exception;
+
+    public boolean fileDelete(String fileNo) throws Exception;
 }
