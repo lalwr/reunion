@@ -8,9 +8,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>삭제확인</title>
 </head>
 <body>
+
+<form action="/boardreply/list_reply/3" method="get">
+삭제하시겠습니까??
+    <table class="table">
+        <tr>
+            <td><input type="submit" value="삭제"></td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</form>
 
 </body>
 </html>
