@@ -93,8 +93,10 @@ function loadReply() {
     <div class="col-lg-12">
         <div class="panel panel-info">
             <div class="panel-body panel-view">
+                <c:if test="${sessionScope.loginId == result.regId}">
                 <button type="button" class="btn btn-default" id="save" onclick="saveReunion()">저장</button>
                 <button type="button" class="btn btn-default" id="delete" onclick="deleteReunion()">삭제</button>
+                </c:if>
                 <button type="button" class="btn btn-default" id="list" onclick="listReunion()">목록</button>
             </div>
         </div>

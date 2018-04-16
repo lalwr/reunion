@@ -71,7 +71,9 @@ function listReunion() {
     <div class="col-lg-12">
         <div class="panel panel-info">
             <div class="panel-body panel-view">
+                <c:if test="${sessionScope.loginId == result.regId}">
                 <button type="button" class="btn btn-default" id="update" onclick="updateReunion()">수정</button>
+                </c:if>
                 <button type="button" class="btn btn-default" id="list" onclick="listReunion()">목록</button>
             </div>
         </div>
