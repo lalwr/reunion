@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+
 @Controller
 @RequestMapping (value = "/member", produces="text/html;charset=UTF-8")
 public class LoginController {
@@ -28,8 +29,7 @@ public class LoginController {
     SignUpService signUpService;
 
     @GetMapping(value = "/login")
-    public String login(HttpServletRequest request){
-        HttpSession session = request.getSession();
+    public String login(HttpSession session){
         if(session.getAttribute("loginId")==null){
             return "/memberManaging/login";
         }else{
@@ -73,7 +73,11 @@ public class LoginController {
     @PostMapping(value = "/signUp")
     public String signUp(@RequestParam(name = "id") String id, @RequestParam(name = "name") String name,
                          @RequestParam(name = "password") String password, @RequestParam(name = "school") String school){
-
+//
+//        String salt = SHA256Util.generateSalt();
+//        String newPassword = SHA256Util.getEncrypt(password, salt);
+//
+//
         signUpService.signUp(id,name,password,school);
 
         return "redirect:/member/login";
