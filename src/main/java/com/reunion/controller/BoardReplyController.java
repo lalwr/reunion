@@ -44,12 +44,8 @@ public class BoardReplyController {
         List<BoardReply> replyList = boardReplyService.list(no);
 
         modelMap.addAttribute("replyList", replyList);
-//<<<<<<< HEAD
-//        return "ajax/reply/replyView";
-//=======
         model.addAttribute("board_n",no);
         return "reply/replyView";
-//>>>>>>> feature/replyWork
     }
 
     @PostMapping(value = "/write_reply/{boardNo}")
