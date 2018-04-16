@@ -6,6 +6,6 @@
     <tiles:insertAttribute name="header" />
 </head>
 <body>
-<tiles:insertAttribute name="content" />
+    <tiles:insertAttribute name="content" />
 </body>
 </html>
