@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<form action="/boardreply/list_reply" method="get">
+<form action="/boardreply/list_reply/3" method="get">
 삭제하시겠습니까??
     <table class="table">
         <tr>

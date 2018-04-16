@@ -45,7 +45,7 @@ public class BoardReplyController {
 
     @PostMapping(value = "/write_reply/{boardNo}")
     public String write(BoardReply reply,@PathVariable(value="boardNo")int no) throws Exception {
-        reply.setMemberId("park");
+        reply.setMemberId("oh");
         reply.setBoardNo(no);
         boardReplyService.insert(reply);
 
@@ -55,20 +55,10 @@ public class BoardReplyController {
     @GetMapping(value = "/delete_reply/{no}")
     public String delete(@PathVariable(value="no")int no, BoardReply reply) throws Exception {
         boardReplyService.delete(no);
+//        String strNo = Integer.toString(no);
         return "reply/delete_reply";
     }
 
-//    @PostMapping("/update_reply/{no}")
-//    public String update(@PathVariable(value="no")int no,@RequestParam(name = "updatecontent") String content,BoardReply reply,ModelMap modelMap) throws Exception{
-//        List<BoardReply> replyList = boardReplyService.list(reply);
-//        reply.setContent(content);
-//        reply.setNo(no);
-//        boardReplyService.update(reply);
-//
-//        modelMap.addAttribute("replyList", replyList);
-//
-//        return "redirect:/boardreply/list_reply";
-//    }
 @PostMapping("/update_reply/{no}")
 public String update(@PathVariable(value="no")int no,int boardno,@RequestParam(name = "updatecontent") String content,BoardReply reply,ModelMap modelMap) throws Exception{
     List<BoardReply> replyList = boardReplyService.list(boardno);
@@ -77,8 +67,8 @@ public String update(@PathVariable(value="no")int no,int boardno,@RequestParam(n
     boardReplyService.update(reply);
 
     modelMap.addAttribute("replyList", replyList);
-
-    return "redirect:/boardreply/list_reply";
+    String strNo = Integer.toString(no);
+    return "redirect:/boardreply/list_reply/3";
 }
 
     @GetMapping("/update/form/{no}")

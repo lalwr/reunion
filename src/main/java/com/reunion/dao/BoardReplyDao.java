@@ -30,10 +30,6 @@ public class BoardReplyDao {
                 .usingGeneratedKeyColumns("no"); // 자동으로 id가 생성될 경우
     }
 
-//    public List<BoardReply> list() throws Exception {
-//        return jdbc.query("SELECT no AS no ,content AS content ,member_id AS memberId ,board_no AS boardNo, " +
-//                "reg_date AS regDate ,edit_date AS editDate FROM board_reply order by no desc", Collections.emptyMap(), rowMapper);
-//    }
 
     public List<BoardReply> list(int boardno) throws Exception {
         return jdbc.query("SELECT no AS no ,content AS content ,member_id AS memberId ,board_no AS boardNo, " +
@@ -52,13 +48,13 @@ public class BoardReplyDao {
     public int delete(int no){
         Map<String, ?> params = Collections.singletonMap("no", no);
 
-        return jdbc.update("delete from board_reply where no = :no ", params);
+        return jdbc.update("delete from board_reply where no = :no  and board_no=3", params);
     }
 
     public int update(BoardReply boardReply){
         SqlParameterSource params = new BeanPropertySqlParameterSource(boardReply);
         return jdbc.update("update board_reply set content = :content, " +
-                "edit_date = now() where  no = :no", params);
+                "edit_date = now() where  no = :no and board_no=3", params);
     }
 
     public BoardReply selectOne(int no){
