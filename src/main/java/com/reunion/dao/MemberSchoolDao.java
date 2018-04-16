@@ -33,7 +33,6 @@ public class MemberSchoolDao {
 
     public int insertMemberSchool(MemberSchool ms){
         SqlParameterSource params = new BeanPropertySqlParameterSource(ms);
-        // 자동으로 id를 생성할 경우에는 아래와 같이 생성된 pk를 반환할 수 있다.
         int num = insertAction.execute(params);
         return num;
     }
