@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /*
@@ -34,31 +33,61 @@ import java.util.List;
 */
 
 @Controller
+@RequestMapping(value="/boardreply")
 public class BoardReplyController {
 
     @Autowired
     BoardReplyService boardReplyService;
 
-    @GetMapping(value = "/list_reply")
-    public String list(BoardReply reply, ModelMap modelMap) throws Exception {
-        List<BoardReply> replyList = boardReplyService.list(reply);
+    @GetMapping(value = "/list_reply/{boardNo}")
+    public String list(@PathVariable(value="boardNo")int no,BoardReply reply, ModelMap modelMap,Model model) throws Exception {
+        List<BoardReply> replyList = boardReplyService.list(no);
+
         modelMap.addAttribute("replyList", replyList);
-        return "ajax/reply/replyView";
+//<<<<<<< HEAD
+//        return "ajax/reply/replyView";
+//=======
+        model.addAttribute("board_n",no);
+        return "reply/replyView";
+//>>>>>>> feature/replyWork
     }
 
-    @PostMapping(value = "/write_reply")
-    public String write(BoardReply reply, ModelMap modelMap) throws Exception {
+    @PostMapping(value = "/write_reply/{boardNo}")
+    public String write(BoardReply reply,@PathVariable(value="boardNo")int no) throws Exception {
         reply.setMemberId("oh");
-        reply.setBoardNo(1);
+        reply.setBoardNo(no);
         boardReplyService.insert(reply);
 
-        return "redirect:/list_reply";
+        return "redirect:/boardreply/list_reply/3";
     }
 
-    @PostMapping(value = "/delete_reply}")
-    public String delete(BoardReply reply,ModelMap modelMap) throws Exception {
-        boardReplyService.delete(reply);
-        return "redirect:/list_reply";
+    @GetMapping(value = "/delete_reply/{no}")
+    public String delete(@PathVariable(value="no")int no, BoardReply reply) throws Exception {
+        boardReplyService.delete(no);
+//        String strNo = Integer.toString(no);
+        return "reply/delete_reply";
+    }
+
+    @PostMapping("/update_reply/{no}")
+    public String update(@PathVariable(value="no")int no,int boardno,@RequestParam(name = "updatecontent") String content,BoardReply reply,ModelMap modelMap) throws Exception{
+        List<BoardReply> replyList = boardReplyService.list(boardno);
+        reply.setContent(content);
+        reply.setNo(no);
+        boardReplyService.update(reply);
+
+        modelMap.addAttribute("replyList", replyList);
+        String strNo = Integer.toString(no);
+        return "redirect:/boardreply/list_reply/3";
+    }
+
+    @GetMapping("/update/form/{no}")
+    public String updateform(@PathVariable(value="no")int no,BoardReply reply,Model model) throws Exception{
+        reply = boardReplyService.selectContent(no);
+        String content = reply.getContent();
+        model.addAttribute("content",content);
+        System.out.println("내용:"+content);
+
+        return "reply/update_reply";
     }
 
 }
