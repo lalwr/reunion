@@ -16,7 +16,12 @@ USE reunion;
 show databases;
 
 #table 컬럼명 변경
-ALTER TABLE board_reply CHANGE reply_content content VARCHAR(500) NOT NULL COMMENT '댓글 내용';
+ALTER TABLE file CHANGE reply_content content VARCHAR(500) NOT NULL COMMENT '댓글 내용';
+#table 컬럼 삭제
+ALTER TABLE file DROP COLUMN file_size;
+##table 컬럼 추가
+ALTER TABLE file ADD COLUMN file_size VARCHAR(50) NOT NULL AFTER temp_name;
+
 
 -- creates some test-tables and data
 -- DROP TABLE EMPLOYEE;
@@ -90,7 +95,6 @@ CREATE TABLE file(
   temp_name     VARCHAR(100) NOT NULL COMMENT '임시 파일명',
   path          VARCHAR(100) NOT NULL COMMENT '파일 경로',
   format		VARCHAR(100) NOT NULL COMMENT '파일 형식',
-  reg_id        VARCHAR(20) NOT NULL COMMENT '등록자 아이디',
   reg_date      DATETIME NOT NULL COMMENT '등록일시',
   board_no      INTEGER NOT NULL COMMENT '게시글 번호',
   PRIMARY KEY  (no),
@@ -179,8 +183,8 @@ INSERT INTO board_reply(reply_content, member_id, reg_date, edit_date, board_no)
 VALUES('무댓!!', 'kim', now(), now(), 1);
 
 #파일
-INSERT INTO file (name, temp_name, path, format, reg_id, reg_date, board_no)
-VALUES("test.png", "dwjw123.png", "image","/mac/download/", "kim", now(), '1');
+INSERT INTO file (name, temp_name, file_size, path, format, reg_date, board_no)
+VALUES("test.png", "dwjw123.png", "1024","/mac/download/","image", now(), '1');
 
 SELECT no AS no
 	   ,subject AS subject
@@ -239,9 +243,9 @@ WHERE 1=1;
 SELECT no AS no
 	   ,name AS name
 	   ,temp_name AS tempName
+	   ,file_size AS fileSize
 	   ,path AS path
 	   ,format AS fotmat
-	   ,reg_id AS regID
 	   ,reg_date AS regDate
 	   ,board_no AS boardNo
 FROM file

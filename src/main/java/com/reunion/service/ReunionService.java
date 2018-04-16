@@ -2,6 +2,7 @@ package com.reunion.service;
 
 import com.reunion.domain.Condition;
 import com.reunion.domain.Reunion;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,6 +18,6 @@ public interface ReunionService {
 
     public int deleteReunion(Reunion reunionNo) throws Exception;
 
-    public int writeReunion(Reunion reunion) throws Exception;
+    public int writeReunion(Reunion reunion, MultipartFile[] files) throws Exception;
 
 }

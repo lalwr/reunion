@@ -6,10 +6,22 @@ import com.reunion.domain.Reunion;
 import com.reunion.service.ReunionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 @Controller
 @RequestMapping(value = "/reunion")
@@ -45,9 +57,13 @@ public class ReunionController {
     }
 
     @PostMapping(value = "/write")
-    public String RegisterReunion(Reunion reunion, ModelMap modelMap) throws Exception {
-        reunion.setRegId("kim");
-        reunionService.writeReunion(reunion);
+    public String RegisterReunion(HttpSession session, @ModelAttribute("reunion") Reunion reunion, @RequestParam("file") MultipartFile[] files, ModelMap modelMap) throws Exception {
+
+        String loginId = (String)session.getAttribute("loginId");
+        reunion.setRegId(loginId);
+        reunion.setRegDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        reunion.setEditDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        reunionService.writeReunion(reunion, files);
 
         return "redirect:/reunion/list";
     }
@@ -79,4 +95,5 @@ public class ReunionController {
         reunionService.deleteReunion(reunion);
         return "redirect:/reunion/list";
     }
+
 }
