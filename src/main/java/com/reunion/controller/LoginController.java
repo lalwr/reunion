@@ -1,7 +1,6 @@
 package com.reunion.controller;
 
 import com.reunion.domain.Member;
-import com.reunion.domain.MemberSchool;
 import com.reunion.domain.School;
 import com.reunion.service.MemberSchoolService;
 import com.reunion.service.MemberService;
@@ -14,13 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+
 
 @Controller
 @RequestMapping (value = "/member", produces="text/html;charset=UTF-8")
-
 public class LoginController {
     @Autowired
     SchoolService schoolService;
@@ -32,18 +29,12 @@ public class LoginController {
     SignUpService signUpService;
 
     @GetMapping(value = "/login")
-    public String login(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if(session != null){
-            if(session.getAttribute("loginId")==null){
-                return "/memberManaging/login";
-            }else{
-                return "redirect:/reunion/list";
-            }
-        }else{
+    public String login(HttpSession session){
+        if(session.getAttribute("loginId")==null){
             return "/memberManaging/login";
+        }else{
+            return "redirect:/reunion/list";
         }
-
     }
     @ResponseBody
     @PostMapping(value = "/loginCheck")
@@ -82,7 +73,11 @@ public class LoginController {
     @PostMapping(value = "/signUp")
     public String signUp(@RequestParam(name = "id") String id, @RequestParam(name = "name") String name,
                          @RequestParam(name = "password") String password, @RequestParam(name = "school") String school){
-
+//
+//        String salt = SHA256Util.generateSalt();
+//        String newPassword = SHA256Util.getEncrypt(password, salt);
+//
+//
         signUpService.signUp(id,name,password,school);
 
         return "redirect:/member/login";
