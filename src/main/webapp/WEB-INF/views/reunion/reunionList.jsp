@@ -76,7 +76,6 @@ function listSearch() {
         <tr>
             <th>번호</th>
             <th>제목</th>
-            <th>내용</th>
             <th>작성자</th>
             <th>작성일</th>
         </tr>
@@ -88,7 +87,6 @@ function listSearch() {
                 <input type="hidden" name="categoryNo" value="${list.categoryNo}">
                 <td>${list.no}</td>
                 <td><a href="javascript:;" onclick="view(${list.no}); return false;">${list.subject}</a></td>
-                <td>${list.content}</td>
                 <td>${list.regId}</td>
                 <td>${list.regDate}</td>
             </tr>

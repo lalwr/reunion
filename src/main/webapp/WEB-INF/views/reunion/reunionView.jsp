@@ -60,6 +60,16 @@ function listReunion() {
                                 <label>작성일</label>
                                 <input class="form-control" name="regDate" value="${result.regDate}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성일">
                             </div>
+                            <c:forEach var="file" items="${files}" varStatus="status">
+                            <div class="form-group">
+                                <label>파일${status.count}</label>
+                                <input class="form-control" name="file" value="${file.name}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="파일">
+                                <label>이미지뷰어</label>
+                                <c:if test="${file.format == 'image/png'}">
+                                <img src="/reunion/image//${file.no}" class="img-Thumbnail" />
+                                </c:if>
+                            </div>
+                            </c:forEach>
                         </div>
                     </div>
 
