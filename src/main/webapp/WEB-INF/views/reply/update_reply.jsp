@@ -10,7 +10,7 @@
     <%
         String s = (String)request.getAttribute("content") ;
     %>
-
+    <input type="hidden" name="boardno" value="3">
     내용 : <textarea name="updatecontent" cols="40" rows="8"><%=s%></textarea><br>
     <input type="submit">
 

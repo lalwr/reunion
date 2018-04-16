@@ -25,9 +25,9 @@
                 <td>${list.content}</td>
                 <td>${list.editDate}</td>
                 <c:if test="${list.memberId eq 'oh'}">
-                    <td><button type="button" onclick="location.href='update/form/${list.no}'">수정</button> </td>
+                    <td><button type="button" onclick="location.href='/boardreply/update/form/${list.no}'">수정</button> </td>
                     <%--<input type=hidden name="no" value="${list.no}">--%>
-                    <td><input type="button" value="삭제" onclick="location.href='delete_reply/${list.no}' "></td>
+                    <td><input type="button" value="삭제" onclick="location.href='/boardreply/delete_reply/${list.no}' "></td>
 
                 </c:if>
             </tr>

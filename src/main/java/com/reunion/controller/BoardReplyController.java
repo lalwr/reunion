@@ -73,6 +73,7 @@ public class BoardReplyController {
         List<BoardReply> replyList = boardReplyService.list(boardno);
         reply.setContent(content);
         reply.setNo(no);
+        reply.setBoardNo(3);
         boardReplyService.update(reply);
 
         modelMap.addAttribute("replyList", replyList);
