@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class BoardReplyController {
         reply.setBoardNo(no);
         boardReplyService.insert(reply);
 
-        return "true";
+        return "reunion/detail";
     }
 
     @ResponseBody
@@ -68,24 +69,25 @@ public class BoardReplyController {
         return "reply/delete_reply";
     }
 
-    @PostMapping("/update_reply/{no}")
-    public String update(@PathVariable(value="no")int no,int boardno,@RequestParam(name = "updatecontent") String content,BoardReply reply,ModelMap modelMap) throws Exception{
+    @PostMapping("/update_reply/{boardNo}/{no}")
+    public String update(HttpServletRequest request,@PathVariable(value="no")int no, @PathVariable(value="boardNo")int boardno, @RequestParam(name = "updatecontent") String content, BoardReply reply, ModelMap modelMap) throws Exception{
         List<BoardReply> replyList = boardReplyService.list(boardno);
         reply.setContent(content);
         reply.setNo(no);
-        reply.setBoardNo(3);
+        reply.setBoardNo(boardno);
         boardReplyService.update(reply);
 
         modelMap.addAttribute("replyList", replyList);
         String strNo = Integer.toString(no);
-        return "redirect:/boardreply/list_reply/3";
+        return "reply/update_ok";
     }
 
-    @GetMapping("/update/form/{no}")
-    public String updateform(@PathVariable(value="no")int no,BoardReply reply,Model model) throws Exception{
+    @GetMapping("/update/form/{boardNo}/{no}")
+    public String updateform(@PathVariable(value="no")int no,@PathVariable(value="boardNo")int boardno,BoardReply reply,Model model) throws Exception{
         reply = boardReplyService.selectContent(no);
         String content = reply.getContent();
         model.addAttribute("content",content);
+        model.addAttribute("boardNo",boardno);
 
         return "reply/update_reply";
     }

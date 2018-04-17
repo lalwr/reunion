@@ -54,7 +54,7 @@ public class BoardReplyDao {
     public int update(BoardReply boardReply){
         SqlParameterSource params = new BeanPropertySqlParameterSource(boardReply);
         return jdbc.update("update board_reply set content = :content, " +
-                "edit_date = now() where  no = :no and board_no=3", params);
+                "edit_date = now() where  no = :no and board_no=:boardNo", params);
     }
 
     public BoardReply selectOne(int no){
