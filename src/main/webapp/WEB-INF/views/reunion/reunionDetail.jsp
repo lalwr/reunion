@@ -83,6 +83,7 @@ function replyDelete(no) {
         }
     });
 }
+
 </script>
 <!DOCTYPE html>
 <html lang="ko">
