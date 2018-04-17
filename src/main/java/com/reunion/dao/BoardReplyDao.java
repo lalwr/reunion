@@ -45,21 +45,16 @@ public class BoardReplyDao {
         return jdbc.update(sql.toString(), params);
     }
 
-//    public int delete(int no,int boardNo){
-//        Map<String, ?> params = Collections.singletonMap("no", no);
-//
-//        return jdbc.update("delete from board_reply where no = :no  and board_no=:boardNo", params);
-//    }
-
     public int delete(BoardReply reply){
         SqlParameterSource params = new BeanPropertySqlParameterSource(reply);
+
         return jdbc.update("delete from board_reply where no = :no  and board_no = :boardNo", params);
     }
 
-    public int update(BoardReply reply){
-        SqlParameterSource params = new BeanPropertySqlParameterSource(reply);
+    public int update(BoardReply boardReply){
+        SqlParameterSource params = new BeanPropertySqlParameterSource(boardReply);
         return jdbc.update("update board_reply set content = :content, " +
-                "edit_date = now() where  no = :no and board_no = :boardNo", params);
+                "edit_date = now() where  no = :no and board_no=:boardNo", params);
     }
 
     public BoardReply selectOne(int no){
@@ -71,6 +66,11 @@ public class BoardReplyDao {
         }catch(DataAccessException e){
             return null;
         }
+    }
+
+    public int deleteAll(int no){
+        Map<String, ?> params = Collections.singletonMap("no", no);
+        return jdbc.update("delete from board_reply where board_no = :no", params);
     }
 
 }

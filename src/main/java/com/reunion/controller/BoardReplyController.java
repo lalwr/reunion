@@ -1,13 +1,19 @@
 package com.reunion.controller;
 
+import com.reunion.dao.BoardReplyDao;
+import com.reunion.dao.MemberDao;
+import com.reunion.dao.MemberSchoolDao;
+import com.reunion.dao.SchoolDao;
 import com.reunion.domain.BoardReply;
-import com.reunion.service.BoardReplyServiceImpl;
+import com.reunion.domain.Reunion;
+import com.reunion.service.BoardReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -33,58 +39,55 @@ import java.util.List;
 public class BoardReplyController {
 
     @Autowired
-    BoardReplyServiceImpl boardReplyServiceImpl;
+    BoardReplyService boardReplyService;
 
     @GetMapping(value = "/list_reply/{boardNo}")
-    public String list(HttpSession session,@PathVariable(value="boardNo")int no,BoardReply reply, ModelMap modelMap,Model model) throws Exception {
-        List<BoardReply> replyList = boardReplyServiceImpl.list(no);
+    public String list(@PathVariable(value="boardNo")int no,BoardReply reply, ModelMap modelMap,Model model) throws Exception {
+        List<BoardReply> replyList = boardReplyService.list(no);
 
         modelMap.addAttribute("replyList", replyList);
         model.addAttribute("board_n",no);
-        model.addAttribute("userid",session.getId());
-//        return "ajax/reply/replyView";
-        return "reply/replyView";
+        return "ajax/reply/replyView";
     }
 
+    @ResponseBody
     @PostMapping(value = "/write_reply/{boardNo}")
-    public String write(HttpSession session, BoardReply reply, @PathVariable(value="boardNo")int no) throws Exception {
-        reply.setMemberId(session.getId());
+    public String write(BoardReply reply, @PathVariable(value="boardNo")int no, HttpSession session) throws Exception {
+        String loginId = (String)session.getAttribute("loginId");
+        reply.setMemberId(loginId);
         reply.setBoardNo(no);
-        reply.setMemberId("oh");
-        boardReplyServiceImpl.insert(reply);
+        boardReplyService.insert(reply);
 
-        return "redirect:/boardreply/list_reply/"+no;
+        return "reunion/detail";
     }
 
-    @GetMapping(value = "/delete_reply/{boardNo}/{no}")
-    public String delete(@PathVariable(value="no")int no, @PathVariable(value="boardNo")int boardno, BoardReply reply,Model model) throws Exception {
-//        boardReplyService.delete(no,boardno);
-        boardReplyServiceImpl.delete(reply);
-
-//        String strNo = Integer.toString(no);
-        model.addAttribute("boardno",boardno);
+    @ResponseBody
+    @PostMapping(value = "/delete_reply/{no}")
+    public String delete(@PathVariable(value="no")int no, BoardReply reply) throws Exception {
+        reply.setNo(no);
+        boardReplyService.delete(reply);
         return "reply/delete_reply";
     }
 
     @PostMapping("/update_reply/{boardNo}/{no}")
-    public String update(@PathVariable(value="no")int no, @PathVariable(value="boardNo")int boardno, @RequestParam(name = "updatecontent") String content, BoardReply reply, ModelMap modelMap) throws Exception{
-        List<BoardReply> replyList = boardReplyServiceImpl.list(boardno);
+    public String update(HttpServletRequest request,@PathVariable(value="no")int no, @PathVariable(value="boardNo")int boardno, @RequestParam(name = "updatecontent") String content, BoardReply reply, ModelMap modelMap) throws Exception{
+        List<BoardReply> replyList = boardReplyService.list(boardno);
         reply.setContent(content);
         reply.setNo(no);
         reply.setBoardNo(boardno);
-        boardReplyServiceImpl.update(reply);
+        boardReplyService.update(reply);
 
         modelMap.addAttribute("replyList", replyList);
-        return "redirect:/boardreply/list_reply/"+boardno;
+        String strNo = Integer.toString(no);
+        return "reply/update_ok";
     }
 
     @GetMapping("/update/form/{boardNo}/{no}")
     public String updateform(@PathVariable(value="no")int no,@PathVariable(value="boardNo")int boardno,BoardReply reply,Model model) throws Exception{
-        reply = boardReplyServiceImpl.selectContent(no);
-        reply.setBoardNo(boardno);
+        reply = boardReplyService.selectContent(no);
         String content = reply.getContent();
         model.addAttribute("content",content);
-        System.out.println("내용:"+content);
+        model.addAttribute("boardNo",boardno);
 
         return "reply/update_reply";
     }

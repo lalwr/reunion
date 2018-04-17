@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <script type="text/javascript">
 $(document).ready(function()
@@ -8,7 +9,6 @@ $(document).ready(function()
 });
 function saveReunion() {
     document.getElementById("form").action = "${contextPath}/reunion/update";
-    document.getElementById("method").value = "put";
     document.getElementById("form").submit();
 }
 function deleteReunion() {
@@ -25,8 +25,8 @@ function listReunion() {
 function loadReply() {
     $.ajax({
         type: "GET",
-        url: '/list_reply',
-        data : { no : document.getElementById('no').value },
+        url: '/boardreply/list_reply/' + document.getElementById('no').value,
+        data : { },
         success: function(data){
             $("#reply").html(data);
         },
@@ -43,7 +43,7 @@ function deleteFile(no) {
     if (confirm("정말 삭제하시겠습니까??") == true){
         $.ajax({
             type: "GET",
-            url: '/reunion/delete/' + no,
+            url: '/reunion/fileDelete/' + no,
             data : { },
             success: function(data){
                 alert('삭제 성공하였습니다');
@@ -57,6 +57,32 @@ function deleteFile(no) {
         return false;
     }
 }
+function replyWrite(){
+    $.ajax({
+        type: "POST",
+        url: '/boardreply/write_reply/' + document.getElementById('no').value,
+        data : $("#formReply").serialize(),
+        success: function(data){
+            window.location.reload();
+        },
+        error: function(err) {
+            alert("댓글 등록 실패");
+        }
+    });
+}
+function replyDelete(no) {
+    $.ajax({
+        type: "POST",
+        url: '/boardreply/delete_reply/' + no,
+        data : { boardNo : document.getElementById('no').value },
+        success: function(data){
+            window.location.reload();
+        },
+        error: function(err) {
+            alert("댓글 삭제 실패");
+        }
+    });
+}
 </script>
 <!DOCTYPE html>
 <html lang="ko">
@@ -69,7 +95,7 @@ function deleteFile(no) {
         <h3 class="page-header">상세 화면</h3>
     </div>
 </div>
-<form id="form" name="form" method="post" action="">
+<form id="form" name="form" method="post" action="" enctype="multipart/form-data">
 <input type="hidden" name="_method" value="" id="method">
 <input type="hidden" name="schoolNo" value="${result.schoolNo}">
 <input type="hidden" name="categoryNo" value="${result.categoryNo}">
@@ -92,7 +118,7 @@ function deleteFile(no) {
                             </div>
                             <div class="form-group">
                                 <label>내용</label>
-                                <input class="form-control" name="content" value="${result.content}" placeholder="내용">
+                                <textarea class="form-control" name="content" id="content" rows="3" placeholder="내용">${result.content}</textarea>
                             </div>
                             <div class="form-group">
                                 <label>작성자</label>
@@ -100,7 +126,7 @@ function deleteFile(no) {
                             </div>
                             <div class="form-group">
                                 <label>작성일</label>
-                                <input class="form-control" name="regDate" value="${result.regDate}" placeholder="작성일">
+                                <input class="form-control" name="regDate" value="${result.regDate}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성일">
                             </div>
                             <c:forEach var="file" items="${files}" varStatus="status">
                             <div class="form-group">
@@ -111,6 +137,18 @@ function deleteFile(no) {
                                 </c:if>
                             </div>
                             </c:forEach>
+                            <c:if test="${fn:length(files) == 0}">
+                            <div class="form-group">
+                                <label for="file1">파일1</label>
+                                <input type="file" class="form-control-file" id="file1" name="file">
+                            </div>
+                            </c:if>
+                            <c:if test="${fn:length(files) == 0 || fn:length(files) == 1}">
+                            <div class="form-group">
+                                <label for="file2">파일2</label>
+                                <input type="file" class="form-control-file" id="file2" name="file">
+                            </div>
+                            </c:if>
                         </div>
                     </div>
 
