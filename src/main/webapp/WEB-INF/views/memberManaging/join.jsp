@@ -55,10 +55,6 @@
                         </script>
                     </div>
 
-
-
-
-
                     <div class="form-group col-md-6">
                         <label for="pw">비밀번호</label>
                         <input type="password" class="form-control" name="password" id="pw" placeholder="비밀번호를 입력하세요">
@@ -90,9 +86,14 @@
                         </script>
                     </div>
 
+                    <div class="form-group col-md-6">
+                        <label for="pw">성명</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="성명을 입력하세요">
+                    </div>
+
                     <div class="form-group col-md-12">
                         <label for="school">출신 학교</label>
-                        <select class="form-control" name="" id="school">
+                        <select class="form-control" name="school" id="school">
                             <c:forEach var="school" items="${schools}">
                                 <option>
                                         ${school.name}

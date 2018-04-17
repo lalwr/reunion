@@ -2,6 +2,7 @@ package com.reunion.controller;
 
 import com.reunion.domain.Member;
 import com.reunion.domain.School;
+import com.reunion.security.ShaEncoding;
 import com.reunion.service.MemberSchoolService;
 import com.reunion.service.MemberService;
 import com.reunion.service.SchoolService;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -41,6 +41,9 @@ public class LoginController {
                              @RequestParam(name = "password") String password,
                              ModelMap modelMap){
         Member member = memberService.getMember(id);
+        password = ShaEncoding.cryptedPwd(password);
+        System.out.println("password : " + password);
+        System.out.println("memberPassword : " + member.getPassword());
         if(member != null){
             if(member.getPassword().equals(password)){ // 로그인 성공
                 session.setAttribute("loginId", member.getId());
@@ -84,6 +87,8 @@ public class LoginController {
     @PostMapping(value = "/signUp")
     public String signUp(@RequestParam(name = "id") String id, @RequestParam(name = "name") String name,
                          @RequestParam(name = "password") String password, @RequestParam(name = "school") String school){
+
+        password = ShaEncoding.cryptedPwd(password);
         signUpService.signUp(id,name,password,school);
 
         return "redirect:/member/login";
