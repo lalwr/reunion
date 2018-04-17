@@ -50,7 +50,7 @@ function listReunion() {
                             </div>
                             <div class="form-group">
                                 <label>내용</label>
-                                <input class="form-control" name="content" value="${result.content}" readonly="readonly" placeholder="내용">
+                                <textarea class="form-control" name="content" id="content" rows="3" placeholder="내용" readonly="readonly">${result.content}</textarea>
                             </div>
                             <div class="form-group">
                                 <label>작성자</label>
@@ -64,8 +64,8 @@ function listReunion() {
                             <div class="form-group">
                                 <label>파일${status.count}</label>
                                 <input class="form-control" name="file" value="${file.name}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="파일">
-                                <label>이미지뷰어</label>
                                 <c:if test="${file.format == 'image/png'}">
+                                <label>이미지뷰어</label>
                                 <img src="/reunion/image//${file.no}" class="img-Thumbnail" />
                                 </c:if>
                             </div>

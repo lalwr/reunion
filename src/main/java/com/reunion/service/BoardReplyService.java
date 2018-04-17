@@ -25,8 +25,8 @@ public class BoardReplyService {
     }
 
     @Transactional
-    public int delete(int no) throws Exception {
-        return boardReplyDao.delete(no);
+    public int delete(BoardReply reply) throws Exception {
+        return boardReplyDao.delete(reply);
     }
 
     @Transactional
@@ -37,5 +37,10 @@ public class BoardReplyService {
     @Transactional
     public BoardReply selectContent(int no) throws Exception{
         return boardReplyDao.selectOne(no);
+    }
+
+    @Transactional
+    public int deleteAll(int no) throws Exception {
+        return boardReplyDao.deleteAll(no);
     }
 }
