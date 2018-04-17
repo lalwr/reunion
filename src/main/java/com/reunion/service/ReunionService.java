@@ -14,7 +14,7 @@ public interface ReunionService {
 
     public Reunion detailReunion(String reunionNo) throws Exception;
 
-    public int updateReunion(Reunion reunion) throws Exception;
+    public int updateReunion(Reunion reunion, MultipartFile[] files) throws Exception;
 
     public int deleteReunion(Reunion reunionNo) throws Exception;
 
@@ -22,7 +22,7 @@ public interface ReunionService {
 
     public List<FileVO> fileReunion(String reunionNo) throws Exception;
 
-    public FileVO fileDownload(String fileNo) throws Exception;
+    public FileVO fileDetail(String fileNo) throws Exception;
 
     public boolean fileDelete(String fileNo) throws Exception;
 }

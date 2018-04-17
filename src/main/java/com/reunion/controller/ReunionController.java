@@ -80,13 +80,13 @@ public class ReunionController {
         return "reunion/reunionDetail";
     }
 
-    @PutMapping(value = "/update")
-    public String updateReunion(Reunion reunion, ModelMap modelMap) throws Exception {
-        reunionService.updateReunion(reunion);
+    @PostMapping(value = "/update")
+    public String updateReunion(Reunion reunion, @RequestParam("file") MultipartFile[] files,ModelMap modelMap) throws Exception {
+        reunionService.updateReunion(reunion, files);
         return "redirect:/reunion/list";
     }
 
-    @DeleteMapping(value = "/delete")
+    @PostMapping(value = "/delete")
     public String deleteReunion(Reunion reunion, ModelMap modelMap) throws Exception {
         reunionService.deleteReunion(reunion);
         return "redirect:/reunion/list";
@@ -100,7 +100,7 @@ public class ReunionController {
     public void fileDownload(@PathVariable(name = "fileNo")String fileNo,
                          HttpServletResponse response) throws Exception{
 
-        FileVO fileVO = reunionService.fileDownload(fileNo);
+        FileVO fileVO = reunionService.fileDetail(fileNo);
 
         //Content-Disposition, Content-Transfer-Encoding 이 있으면 파일이 다운로드된다.
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileVO.getTempName() + "\";");
@@ -126,7 +126,7 @@ public class ReunionController {
     }
 
     @ResponseBody
-    @GetMapping("/delete/{fileNo}")
+    @GetMapping("/fileDelete/{fileNo}")
     public boolean fileDelete(@PathVariable(name = "fileNo")String fileNo) throws Exception{
 
         return reunionService.fileDelete(fileNo);
@@ -138,7 +138,7 @@ public class ReunionController {
     public void fileImgview(@PathVariable(name = "fileNo")String fileNo,
                              HttpServletResponse response) throws Exception{
 
-        FileVO fileVO = reunionService.fileDownload(fileNo);
+        FileVO fileVO = reunionService.fileDetail(fileNo);
 
         response.setHeader("Content-Type", fileVO.getFormat());
         response.setHeader("Content-Length", "" + fileVO.getFileSize());

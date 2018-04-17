@@ -34,6 +34,14 @@ public class LoginController {
         return "/memberManaging/login";
         }
 
+    public String login(HttpSession session){
+        if(session.getAttribute("loginId")==null){
+            return "/memberManaging/login";
+        }else{
+            return "redirect:/reunion/list";
+        }
+    }
+
     @PostMapping(value = "/loginCheck")
     public String loginCheck(HttpSession session,
                              @RequestParam(name = "referer") String referer,
