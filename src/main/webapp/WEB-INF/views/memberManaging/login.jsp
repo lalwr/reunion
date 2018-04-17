@@ -4,41 +4,50 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
     <title>Login</title>
 </head>
 <body>
-<form method="post" action="/member/loginCheck">
-    아이디 : <input type="text" name="id" id = "id"/><br>
-    비밀번호 : <input type="password" name="password" id = "password"/><br>
-    <input type="button" value="로그인" id = "logTry"/>
-    <script>
-        document.getElementById("logTry").onclick = function(){
-            logTry(document.getElementById("id").value, document.getElementById("password").value, "loginCheck");
-        }
+<form class="form-horizontal" method ="post" action ="/member/loginCheck">
+    ${js}
+    <fieldset>
 
-        function logTry(str1, str2, url){
-            var req = new XMLHttpRequest();
-            req.onreadystatechange = function () {
-                if(this.readyState == 4 && this.status == 200){
-                    if("success" == this.response){
-                        var msg = "환영합니다. " + document.getElementById("id").value + "님";
-                        alert(msg);
-                        window.location.href = "/reunion/list";
-                    }else if("incorrectPw" == this.response){
-                        alert("비밀번호가 일치하지 않습니다.");
-                    }else{
-                        alert("아이디가 존재하지 않습니다.");
-                    }
-                }
-            }
-            req.open("POST", url);
-            req.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
-            var data = 'id=' + str1 + '&password=' + str2;
-            req.send(data);
-        }
+        <!-- Form Name -->
+        <legend>Login</legend>
 
-    </script>
-    <input type="button" onclick="location.href = '/member/join'" value = "회원가입"/>
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="id">사용자 ID</label>
+            <div class="col-md-4">
+                <input id="id" name="id" type="text" placeholder="" class="form-control input-md">
+                <span class="help-block">ID를 입력하세요</span>
+            </div>
+        </div>
+
+        <!-- Password input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="password">비밀번호</label>
+            <div class="col-md-4">
+                <input id="password" name="password" type="password" placeholder="" class="form-control input-md">
+                <span class="help-block">비밀번호를 입력하세요</span>
+            </div>
+        </div>
+
+        <!-- Button (Double) -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="buttonLogin"></label>
+            <div class="col-md-8">
+                <input type = "submit" id="buttonLogin" name="buttonLogin" class="btn btn-success" value = "로그인"/>
+                <input tupe = "button" id="buttonRegistry" onclick="location.href = '/member/join'" name="buttonRegistry" class="btn btn-primary" value = "회원가입"/>
+            </div>
+        </div>
+
+        <input type="hidden" name = "referer" value ="${referer}">
+    </fieldset>
 </form>
+
 </body>
 </html>

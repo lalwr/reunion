@@ -1,7 +1,6 @@
 package com.reunion.controller;
 
 import com.reunion.domain.Member;
-import com.reunion.domain.MemberSchool;
 import com.reunion.domain.School;
 import com.reunion.service.MemberSchoolService;
 import com.reunion.service.MemberService;
@@ -14,13 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+
 
 @Controller
 @RequestMapping (value = "/member", produces="text/html;charset=UTF-8")
-
 public class LoginController {
     @Autowired
     SchoolService schoolService;
@@ -32,34 +29,39 @@ public class LoginController {
     SignUpService signUpService;
 
     @GetMapping(value = "/login")
-    public String login(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if(session != null){
-            if(session.getAttribute("loginId")==null){
-                return "/memberManaging/login";
-            }else{
-                return "redirect:/reunion/list";
-            }
-        }else{
-            return "/memberManaging/login";
+    public String login(@RequestParam(name = "referer", required = false)String referer, ModelMap modelMap){
+        modelMap.addAttribute("referer",referer);
+        return "/memberManaging/login";
         }
 
-    }
-    @ResponseBody
     @PostMapping(value = "/loginCheck")
-    public String loginCheck(HttpServletRequest request, @RequestParam(name = "id") String id, @RequestParam(name = "password") String password){
+    public String loginCheck(HttpSession session,
+                             @RequestParam(name = "referer") String referer,
+                             @RequestParam(name = "id") String id,
+                             @RequestParam(name = "password") String password,
+                             ModelMap modelMap){
         Member member = memberService.getMember(id);
         if(member != null){
             if(member.getPassword().equals(password)){ // 로그인 성공
-                HttpSession session = request.getSession();
                 session.setAttribute("loginId", member.getId());
-                return "success";
+                if(referer == null || "".equals(referer)){
+                    return "redirect:/reunion/list";
+                }else{
+                    return "redirect:" + referer;
+                }
+
             }else{ // 비밀번호 불일치
-                return "incorrectPw";
+                StringBuffer js = new StringBuffer();
+                js.append("<script>alert('비밀번호가 일치하지 않습니다.')</script>");
+                modelMap.addAttribute("js",js.toString());
+                return "/memberManaging/login";
             }
         }
         // 아이디 존재하지 않음.
-        return "noId";
+        StringBuffer js = new StringBuffer();
+        js.append("<script>alert('아이디가 존재하지 않습니다.')</script>");
+        modelMap.addAttribute("js",js.toString());
+        return "/memberManaging/login";
 
     }
 
@@ -82,15 +84,13 @@ public class LoginController {
     @PostMapping(value = "/signUp")
     public String signUp(@RequestParam(name = "id") String id, @RequestParam(name = "name") String name,
                          @RequestParam(name = "password") String password, @RequestParam(name = "school") String school){
-
         signUpService.signUp(id,name,password,school);
 
         return "redirect:/member/login";
     }
 
     @GetMapping(value = "/logOut")
-    public String logOut(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
+    public String logOut(HttpSession session){
         session.removeAttribute("loginId");
         return "redirect:/member/login";
     }

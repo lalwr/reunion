@@ -42,18 +42,18 @@ public class BoardReplyController {
         modelMap.addAttribute("replyList", replyList);
         model.addAttribute("board_n",no);
         model.addAttribute("userid",session.getId());
-
-        return "ajax/reply/replyView";
-//        return "reply/replyView";
+//        return "ajax/reply/replyView";
+        return "reply/replyView";
     }
 
     @PostMapping(value = "/write_reply/{boardNo}")
     public String write(HttpSession session, BoardReply reply, @PathVariable(value="boardNo")int no) throws Exception {
         reply.setMemberId(session.getId());
         reply.setBoardNo(no);
+        reply.setMemberId("oh");
         boardReplyServiceImpl.insert(reply);
 
-        return "redirect:/boardreply/list_reply/3";
+        return "redirect:/boardreply/list_reply/"+no;
     }
 
     @GetMapping(value = "/delete_reply/{boardNo}/{no}")
