@@ -9,27 +9,23 @@
 </head>
 <body>
 <div class="container" id="reunion">
-<form id="form" action="/boardreply/write_reply/${board_n}" method="post" name="textform">
-    <input type="hidden" name="_method" value="" id="method">
+    <form id="formReply" action="/boardreply/write_reply/${board_n}" method="post" name="textform">
         <textarea name="content" cols="40" rows="8"></textarea>
-        <input type="submit" class="btn btn-default" value="등록">
-
+        <button type="button" class="btn btn-default" id="save" onclick="replyWrite()">등록</button>
     <table class="table table-hover">
-        <thead>
+        <tbody>
         <tr>
-            <td>글번호</td>
             <td>사용자</td>
             <td>댓글</td>
             <td>등록일자</td>
         </tr>
-        </thead>
-        <tbody>
+
         <c:forEach var="list" items="${replyList}" varStatus="status">
             <tr>
 
-                <td><input class="form-control" name="subject" value="${list.no}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="번호"></td>
+                <%--<td><input class="form-control" name="subject" value="${list.no}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="번호"></td>--%>
                 <td><input class="form-control" name="subject" value="${list.memberId}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="ID"></td>
-                <td><input class="form-control" name="subject" value="${list.content}"  placeholder="댓글"></td>
+                <td><input class="form-control" name="subject" value="${list.content}"  readonly="readonly" style="background-color: #dcdcdc;" placeholder="댓글"></td>
                 <td><input class="form-control" name="subject" value="${list.editDate}" readonly="readonly" style="background-color: #dcdcdc;" placeholder="작성일"></td>
 
                 <c:if test="${list.memberId == 'oh'}">
