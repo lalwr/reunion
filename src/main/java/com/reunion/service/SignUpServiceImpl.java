@@ -3,6 +3,7 @@ package com.reunion.service;
 import com.reunion.dao.SchoolDao;
 import com.reunion.domain.Member;
 import com.reunion.domain.MemberSchool;
+import com.reunion.security.ShaEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -48,7 +48,7 @@ CREATE TABLE school_category(
 CREATE TABLE member(
   no      INTEGER NOT NULL auto_increment COMMENT '번호',
   id       	     VARCHAR(50) NOT NULL COMMENT '아이디',
-  password       VARCHAR(20) NOT NULL COMMENT '비밀번호',
+  password       VARCHAR(64) NOT NULL COMMENT '비밀번호',
   name		     VARCHAR(15) NOT NULL COMMENT '성명',
   reg_date       DATETIME NOT NULL COMMENT '등록일시',
   edit_date      DATETIME NOT NULL COMMENT '수정일시',
