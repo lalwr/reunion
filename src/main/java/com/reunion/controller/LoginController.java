@@ -40,9 +40,11 @@ public class LoginController {
     public String login(HttpSession session, @RequestParam(name = "referer", required = false)String referer, ModelMap modelMap){
         modelMap.addAttribute("referer",referer);
         if(session.getAttribute("loginId")== null || "".equals(session.getAttribute("loginId"))){
-            return "/reunion/list";
+            return "/memberManaging/login";
+        }else{
+            return "redirect:/reunion/list";
         }
-        return "/memberManaging/login";
+
     }
     @GetMapping(value = "/showInfo")
     public String showInfo(HttpSession session, ModelMap modelMap){
