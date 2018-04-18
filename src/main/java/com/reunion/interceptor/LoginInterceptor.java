@@ -22,14 +22,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                                 "/reunion/write",
                                 "/reunion/update");
         String servletPath = request.getServletPath();
-        System.out.println("servletPath : " + servletPath);
 
         if(securePaths.contains(servletPath)) {
             if(loginId == null || "".equals(loginId)){
                 response.sendRedirect("/member/login?referer=" + servletPath);
             }
         }
-        return true;
+        return true; // false 로 넘기면 이미 처리한것으로 생각해서 Controller로 넘어가지 않는다.
     }
 }
 
