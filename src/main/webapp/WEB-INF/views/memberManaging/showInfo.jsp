@@ -10,6 +10,16 @@ memberNo : ${info.no}<br>
 id : ${info.id}<br>
 name : ${info.name}<br>
 school : ${info.schoolName}<br>
+<form method="get" action ="/member/updateForm">
+    <input type ="submit" value = "회원정보 수정"/><br>
+</form>
+<form method="post" action = "/member/delete">
+    <input type ="submit" value = "회원 탈퇴하기">
+    <input type ="hidden" name ="_method" value = "delete">
+</form>
+<form method="get" action = "/reunion/list">
+    <input type ="submit" value = "홈으로 돌아가기">
+</form>
 
 </body>
 </html>

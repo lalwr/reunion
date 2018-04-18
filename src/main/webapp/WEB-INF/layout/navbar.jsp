@@ -14,7 +14,7 @@
                     <li><a href="javascript:;" onclick="login()"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 </c:when>
                 <c:otherwise>
-                    <li><a href="javascript:;" onclick="showInfo()"><span class="glyphicon glyphicon-show-Info"></span> Show Info</a></li>
+                    <li><a href="javascript:;" onclick="showInfo()"><span class="glyphicon glyphicon-show-info"></span> Show Info</a></li>
                     <li><a href="javascript:;" onclick="logOut()"><span class="glyphicon glyphicon-log-out"></span> LogOut</a></li>
                 </c:otherwise>
             </c:choose>

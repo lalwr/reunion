@@ -44,16 +44,39 @@ public class LoginController {
         }else{
             return "redirect:/reunion/list";
         }
-
     }
+
+    @DeleteMapping(value = "/delete")
+    public String delete(HttpSession session){
+        signUpService.delete((String)session.getAttribute("loginId"));
+        session.removeAttribute("loginId");
+        return "redirect:/member/login";
+    }
+
+    @GetMapping(value = "/updateForm")
+    public String updateForm(HttpSession session, ModelMap modelMap){
+        List<School> schools = schoolService.getSchools();
+        modelMap.addAttribute("schools", schools);
+        String memberId = (String) session.getAttribute("loginId");
+        Info info = infoService.showInfo(memberId);
+        modelMap.addAttribute("info",info);
+        return "/memberManaging/updateForm";
+    }
+
+    @PutMapping(value = "/update")
+    public String update(HttpSession session,
+                         @RequestParam(name = "password") String password,
+                         @RequestParam(name ="school") String school){
+        String memberId = (String)session.getAttribute("loginId");
+        signUpService.update(memberId,password,school);
+
+        return "redirect:/member/showInfo";
+    }
+
     @GetMapping(value = "/showInfo")
     public String showInfo(HttpSession session, ModelMap modelMap){
         String memberId = (String) session.getAttribute("loginId");
         Info info = infoService.showInfo(memberId);
-        System.out.println(info.getNo());
-        System.out.println(info.getId());
-        System.out.println(info.getName());
-        System.out.println(info.getSchoolName());
         modelMap.addAttribute("info",info);
 
         return "/memberManaging/showInfo";
