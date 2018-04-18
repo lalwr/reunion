@@ -15,6 +15,7 @@
     <div class="row">
 
         <div class="col-md-8 col-md-offset-2">
+
             <form role="form" method="POST" action="/member/signUp">
 
                 <legend class="text-center">Register</legend>
@@ -23,6 +24,8 @@
                     <legend>Account Details</legend>
 
                     <div class="form-group col-md-6">
+
+
                         <label for="id">사용자 ID</label>
                         <input type="text" class="form-control" name="id" id = "id" placeholder="ID를 입력하세요"/><br>
                         <input type="button" value="ID 중복 확인" id = "idCheck" class="btn btn-primary"/><br>
@@ -115,6 +118,49 @@
                 </div>
 
             </form>
+
+            <form id ="uploadForm" method ="post" enctype="multipart/form-data" action = "/member/upload">
+                <input type="file" name="uploadFile" id = "uploadFile">
+                <input type="submit" name="action" value = "프로필 사진 등록"/>
+                <iframe id="uploadIFrame" name="uploadIFrame" sytle="display:none; visibility:hidden"/>
+            </form>
+
+            <script>
+                window.onload = function(){
+                    document.getElementById("uploadForm").onsubmit = function(){
+                        var fileInput = document.getElementById("profile");
+                        if(fileInput.files !== undefined)
+                        {
+                            var file = fileInput.files[0];
+                            var formData = new FormData();
+                            formData.append("upload_file", file);
+
+                            var req = new XMLHttpRequest();
+                            req.open("POST","/member/upload",true);
+                            req.onreadystatechange = function(){
+                                if(req.readyState == 4 && req.status == 200)
+                                {
+                                    alert("Success");
+                                }
+                            }
+                            req.onprogress = function(evt){
+                                console.log("Percentage % = " + (evt.loaded / evt.total) + "%");
+                            }
+
+                            req.send(formData);
+                            return false;
+                        }else
+                        {
+                            document.getElementById("uploadForm").target = "uploadIFrame";
+                        }
+                    }
+                    document.getElementById("uploadIFrame").onload = function()
+                    {
+                        alert("file upload Done!!!");
+                    }
+                }
+
+            </script>
         </div>
 
     </div>
