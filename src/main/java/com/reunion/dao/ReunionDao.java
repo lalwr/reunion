@@ -33,7 +33,6 @@ public class ReunionDao {
         this.insertAction = new SimpleJdbcInsert(dataSource)
                 .withTableName("board")
                 .usingGeneratedKeyColumns("no"); // 자동으로 id가 생성될 경우
-
     }
 
     public List<Reunion> listReunion(Condition condition) throws Exception{

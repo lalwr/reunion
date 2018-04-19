@@ -6,5 +6,7 @@ import com.reunion.domain.MemberSchool;
 import java.util.List;
 
 public interface SignUpService {
-    public void signUp(String id,String name,String password,String school);
+    public void signUp(String memberId,String name,String password,String school);
+    public void update(String memberId, String password,String school);
+    public void delete(String memberId);
 }

@@ -39,4 +39,25 @@ public class SignUpServiceImpl implements SignUpService{
         ms.setSchoolNo(schoolNo);
         memberSchoolDao.insertMemberSchool(ms);
     }
+
+    @Override
+    @Transactional
+    public void update(String memberId, String password,String school) {
+        Member member = memberDao.selectMember(memberId);
+        member.setPassword(ShaEncoding.cryptedPwd(password));
+        member.setEditDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        int memberNo = memberDao.updateMember(member);
+        int schoolNo = schoolDao.selectSchool(school).getNo();
+        MemberSchool ms = memberSchoolDao.selectMemberSchool(member.getNo());
+        ms.setSchoolNo(schoolNo);
+        memberSchoolDao.updateMemberSchool(ms);
+    }
+
+    @Override
+    @Transactional
+    public void delete(String memberId) {
+        Member member = memberDao.selectMember(memberId);
+        memberSchoolDao.deleteMemberSchool(member.getNo());
+        memberDao.deleteMember(member.getNo());
+    }
 }
