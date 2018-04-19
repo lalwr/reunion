@@ -20,7 +20,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         // 로그인을 해야만 접근할 수 있는 path목록
         List<String> securePaths = Arrays.asList(
                                 "/reunion/write",
-                                "/reunion/update");
+                                "/reunion/update",
+                                "/member/showInfo");
         String servletPath = request.getServletPath();
 
         if(securePaths.contains(servletPath)) {
