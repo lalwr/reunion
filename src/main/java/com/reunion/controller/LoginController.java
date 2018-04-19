@@ -79,7 +79,7 @@ public class LoginController {
         Info info = infoService.showInfo(memberId);
         modelMap.addAttribute("info",info);
 
-        return "/memberManaging/showInfo";
+        return "memberManaging/showInfo";
     }
 
     @PostMapping(value = "/loginCheck")
