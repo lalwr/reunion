@@ -69,8 +69,10 @@ public class SignUpServiceImpl implements SignUpService{
     @Transactional
     public void delete(String memberId) {
         Member member = memberDao.selectMember(memberId);
+        profPicDao.delete(member.getNo());
         memberSchoolDao.deleteMemberSchool(member.getNo());
         memberDao.deleteMember(member.getNo());
+
     }
 
     @Override

@@ -43,6 +43,11 @@ public class ProfPicDao {
             return null;
         }
     }
+
+    public int delete(int memberNo){
+        Map<String, ?> params = Collections.singletonMap("memberNo", memberNo);
+        return jdbc.update("delete from profile where member_no = :memberNo", params);
+    }
 }
 
 
