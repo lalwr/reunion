@@ -26,7 +26,7 @@ public class LoginController {
     @Autowired
     MemberSchoolService memberSchoolService;
     @Autowired
-    SignUpService signUpService;
+    ManagingService managingService;
     @Autowired
     InfoService infoService;
 
@@ -42,7 +42,7 @@ public class LoginController {
 
     @DeleteMapping(value = "/delete")
     public String delete(HttpSession session){
-        signUpService.delete((String)session.getAttribute("loginId"));
+        managingService.delete((String)session.getAttribute("loginId"));
         session.removeAttribute("loginId");
         return "redirect:/member/login";
     }
@@ -52,8 +52,11 @@ public class LoginController {
         List<School> schools = schoolService.getSchools();
         modelMap.addAttribute("schools", schools);
         String memberId = (String) session.getAttribute("loginId");
+        Member member = memberService.getMember(memberId);
         Info info = infoService.showInfo(memberId);
         modelMap.addAttribute("info",info);
+        ProfPicDTO profile = managingService.getProfile(member.getNo());
+        modelMap.addAttribute("profile", profile);
         return "/memberManaging/updateForm";
     }
 
@@ -61,8 +64,10 @@ public class LoginController {
     public String update(HttpSession session,
                          @RequestParam(name = "password") String password,
                          @RequestParam(name ="school") String school){
+//                         @RequestParam("uploadFile") MultipartFile file){
         String memberId = (String)session.getAttribute("loginId");
-        signUpService.update(memberId,password,school);
+        managingService.update(memberId,password,school);
+//        managingService.profileUpdate(memberId, file);
 
         return "redirect:/member/showInfo";
     }
@@ -72,7 +77,7 @@ public class LoginController {
         String memberId = (String) session.getAttribute("loginId");
         Member member = memberService.getMember(memberId);
         Info info = infoService.showInfo(memberId);
-        ProfPicDTO profile = signUpService.getProfile(member.getNo());
+        ProfPicDTO profile = managingService.getProfile(member.getNo());
         modelMap.addAttribute("info",info);
         modelMap.addAttribute("profile",profile);
 
@@ -84,7 +89,7 @@ public class LoginController {
     public void fileImgview(@PathVariable(name = "memberNo")int memberNo,
                             HttpServletResponse response) throws Exception{
 
-        ProfPicDTO profile = signUpService.getProfile(memberNo);
+        ProfPicDTO profile = managingService.getProfile(memberNo);
         System.out.println(profile.getFileSize());
         System.out.println(profile.getName());
         System.out.println(profile.getFormat());
@@ -165,8 +170,8 @@ public class LoginController {
                          @RequestParam("uploadFile") MultipartFile file){
 
         password = ShaEncoding.cryptedPwd(password);
-        signUpService.signUp(id,name,password,school);
-        signUpService.profile(id, file);
+        managingService.signUp(id,name,password,school);
+        managingService.profile(id, file);
 
         return "redirect:/member/login";
     }
