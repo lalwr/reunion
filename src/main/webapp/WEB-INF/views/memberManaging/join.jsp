@@ -16,7 +16,7 @@
 
         <div class="col-md-8 col-md-offset-2">
 
-            <form role="form" method="POST" action="/member/signUp">
+            <form id = "uploadForm" role="form" method="POST" action="/member/signUp" enctype="multipart/form-data">
 
                 <legend class="text-center">Register</legend>
 
@@ -108,59 +108,18 @@
 
                 <div class="form-group">
                     <div class="col-md-12">
-                        <input type="submit" class="btn btn-primary" value ="회원가입" id="check"/>
+                        <input type="file" name="uploadFile" id = "uploadFile">
+                        <input type="submit" class="btn btn-primary" value ="회원가입" id="check"/><br>
                         <script>
                             var button = document.getElementById('check');
                             button.disabled = true;
                         </script>
-
                     </div>
                 </div>
 
             </form>
 
-            <form id ="uploadForm" method ="post" enctype="multipart/form-data" action = "/member/upload">
-                <input type="file" name="uploadFile" id = "uploadFile">
-                <input type="submit" name="action" value = "프로필 사진 등록"/>
-                <iframe id="uploadIFrame" name="uploadIFrame" sytle="display:none; visibility:hidden"/>
-            </form>
 
-            <script>
-                window.onload = function(){
-                    document.getElementById("uploadForm").onsubmit = function(){
-                        var fileInput = document.getElementById("profile");
-                        if(fileInput.files !== undefined)
-                        {
-                            var file = fileInput.files[0];
-                            var formData = new FormData();
-                            formData.append("upload_file", file);
-
-                            var req = new XMLHttpRequest();
-                            req.open("POST","/member/upload",true);
-                            req.onreadystatechange = function(){
-                                if(req.readyState == 4 && req.status == 200)
-                                {
-                                    alert("Success");
-                                }
-                            }
-                            req.onprogress = function(evt){
-                                console.log("Percentage % = " + (evt.loaded / evt.total) + "%");
-                            }
-
-                            req.send(formData);
-                            return false;
-                        }else
-                        {
-                            document.getElementById("uploadForm").target = "uploadIFrame";
-                        }
-                    }
-                    document.getElementById("uploadIFrame").onload = function()
-                    {
-                        alert("file upload Done!!!");
-                    }
-                }
-
-            </script>
         </div>
 
     </div>

@@ -23,6 +23,7 @@ ALTER TABLE file DROP COLUMN file_size;
 ALTER TABLE file ADD COLUMN file_size VARCHAR(50) NOT NULL AFTER temp_name;
 
 
+
 -- creates some test-tables and data
 -- DROP TABLE EMPLOYEE;
 
@@ -87,6 +88,20 @@ CREATE TABLE board_reply(
   board_no      INTEGER NOT NULL COMMENT '게시글 번호',
   PRIMARY KEY  (no),
   FOREIGN KEY (board_no) REFERENCES board (no)
+);
+
+#프로필사진
+CREATE TABLE profile(
+  no      	    INTEGER NOT NULL auto_increment COMMENT '파일번호',
+  name          VARCHAR(100) NOT NULL COMMENT '파일명',
+  temp_name     VARCHAR(100) NOT NULL COMMENT '임시 파일명',
+  file_size     VAARCHAR(50) NOT NULL COMMENT '파일 크기',
+  path          VARCHAR(100) NOT NULL COMMENT '파일 경로',
+  format		VARCHAR(100) NOT NULL COMMENT '파일 형식',
+  reg_date      DATETIME NOT NULL COMMENT '등록일시',
+  member_no      INTEGER NOT NULL COMMENT '사용자 번호',
+  PRIMARY KEY  (no),
+  FOREIGN KEY (member_no) REFERENCES member (no)
 );
 
 CREATE TABLE file(
