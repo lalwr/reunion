@@ -108,6 +108,7 @@ CREATE TABLE file(
   no      	    INTEGER NOT NULL auto_increment COMMENT '파일번호',
   name          VARCHAR(100) NOT NULL COMMENT '파일명',
   temp_name     VARCHAR(100) NOT NULL COMMENT '임시 파일명',
+  file_size 	VARCHAR(50) NOT NULL,
   path          VARCHAR(100) NOT NULL COMMENT '파일 경로',
   format		VARCHAR(100) NOT NULL COMMENT '파일 형식',
   reg_date      DATETIME NOT NULL COMMENT '등록일시',
@@ -251,7 +252,6 @@ SELECT no AS no
 	   ,name AS name
 	   ,category AS category
 	   ,reg_date AS regDate
-	   ,edit_date AS editDate
 FROM school
 WHERE 1=1;
 

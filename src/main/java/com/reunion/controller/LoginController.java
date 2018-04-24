@@ -81,7 +81,7 @@ public class LoginController {
         modelMap.addAttribute("info",info);
         modelMap.addAttribute("profile",profile);
 
-        return "/memberManaging/showInfo";
+        return "memberManaging/showInfo";
     }
 
     @GetMapping("/image/{memberNo}")
